@@ -32,20 +32,24 @@ export function Layers({ canvas }) {
     }
   }
   function updateSelection(e) {
-    console.log(selectedLayer);
-    if (e.selected[0]) setSelectedLayer(e.selected[0].id);
+    const object = e.selected[0];
+    if (object) setSelectedLayer(object.id);
   }
+
   useEffect(() => {
     if (canvas) {
       canvas.on("object:added", updateLayer);
       canvas.on("object:removed", updateLayer);
-      canvas.on("selection:added", updateSelection);
-      canvas.on("selection:removed", setSelectedLayer(null));
-      canvas.on("selection:modified", updateSelection);
+      canvas.on("selection:created", updateSelection);
+      canvas.on("selection:cleared", setSelectedLayer(null));
+      canvas.on("selection:updated", updateSelection);
 
       return () => {
         canvas.off("object:added", updateLayer);
         canvas.off("object:removed", updateLayer);
+        canvas.off("selection:created", updateSelection);
+        canvas.off("selection:cleared", setSelectedLayer(null));
+        canvas.off("selection:updated", updateSelection);
       };
     }
   }, [canvas]);
@@ -57,9 +61,44 @@ export function Layers({ canvas }) {
       canvas.renderAll();
     }
   }
+  function moveLayer(st) {
+    console.log(selectedLayer);
+    if (!selectedLayer) return;
+
+    const objects = canvas.getObjects();
+
+    const object = canvas.getObjects().find((obj) => obj.id === selectedLayer);
+    const index = objects.indexOf(object);
+
+    console.log(index);
+
+    const newObjects = objects;
+    if (st === "up" && index < objects.length - 1) {
+      const temp = newObjects[index];
+      newObjects[index] = newObjects[index + 1];
+      newObjects[index + 1] = temp;
+    } else if (st === "down" && index > 0) {
+      const temp = newObjects[index];
+      newObjects[index] = newObjects[index - 1];
+      newObjects[index - 1] = temp;
+    }
+    console.log(newObjects);
+    const bgcolor = canvas.backgroundColor;
+    canvas.clear();
+
+    newObjects.forEach((obj) => canvas.add(obj));
+    canvas.renderAll();
+
+    updateLayer();
+    canvas.setActiveObject(object);
+    canvas.backgroundColor = bgcolor;
+    canvas.renderAll();
+  }
 
   return (
     <div className="Layerspannel">
+      <button onClick={() => moveLayer("up")}>up</button>
+      <button onClick={() => moveLayer("down")}>down</button>
       <ul>
         {layers.map((obj) => {
           return (
