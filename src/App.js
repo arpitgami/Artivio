@@ -3,6 +3,7 @@ import { Canvas, Rect } from "fabric";
 import "./App.css";
 import { Settings } from "./component/settings";
 import { Layers } from "./component/layerspanel";
+import { AddImage } from "./component/addimage";
 
 function App() {
   const canvasRef = useRef(null);
@@ -41,12 +42,17 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <button onClick={() => addRectangle()}> Rectangle </button>
-      <canvas id="canvas" ref={canvasRef} />
-      <Settings canvas={canvas}></Settings>
-      <Layers canvas={canvas}></Layers>
-    </div>
+    <>
+      <AddImage canvas={canvas}></AddImage>
+      <div className="App">
+        <button onClick={() => addRectangle()}> Rectangle </button>
+        <canvas id="canvas" ref={canvasRef} />
+        <div className="rightpannel">
+          <Settings canvas={canvas}></Settings>
+          <Layers canvas={canvas}></Layers>
+        </div>
+      </div>
+    </>
   );
 }
 
