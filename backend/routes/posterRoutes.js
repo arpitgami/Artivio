@@ -7,4 +7,4 @@ router
   .get("/posters", postersController.getAllPoster)
   .post("/posters", postersController.createPoster);
 
-exports.router = router;
+module.exports = router;
