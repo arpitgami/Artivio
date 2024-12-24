@@ -1,59 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-import { Canvas, Rect } from "fabric";
-import "./App.css";
-import { Settings } from "./component/settings";
-import { Layers } from "./component/layerspanel";
-import { AddImage } from "./component/addimage";
+import React, { useContext, useEffect, useState } from "react";
+import { LandingPage } from "./Pages/LandingPage";
+import PosterEditor from "./Pages/PosterEditor";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Login } from "./Pages/login";
+import SignupPage from "./Pages/signup";
+import { AuthContext } from "./context/authContext";
+import RefreshHandler from "./refreshHandler";
+const App = () => {
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
-function App() {
-  const canvasRef = useRef(null);
-  const [canvas, setCanvas] = useState(null);
-
-  useEffect(() => {
-    if (canvasRef.current) {
-      const initCanvas = new Canvas(canvasRef.current, {
-        width: 400,
-        height: 500,
-        preserveObjectStacking: true,
-      });
-
-      initCanvas.backgroundColor = "#fff";
-      initCanvas.renderAll();
-
-      setCanvas(initCanvas);
-      return () => {
-        initCanvas.dispose();
-      };
-    }
-  }, []);
-
-  function addRectangle() {
-    if (canvas) {
-      const rect = new Rect({
-        top: 100,
-        left: 100,
-        width: 100,
-        height: 100,
-        fill: "#D84D42",
-      });
-
-      canvas.add(rect);
-    }
+  function PrivateRoute({ element }) {
+    return isAuthenticated ? <Navigate to="/home" /> : element;
   }
-
   return (
     <>
-      <AddImage canvas={canvas}></AddImage>
-      <div className="App">
-        <button onClick={() => addRectangle()}> Rectangle </button>
-        <canvas id="canvas" ref={canvasRef} />
-        <div className="rightpannel">
-          <Settings canvas={canvas}></Settings>
-          <Layers canvas={canvas}></Layers>
-        </div>
-      </div>
+      <RefreshHandler setIsAuthenticated={setIsAuthenticated} />
+      <Routes>
+        <Route path="/home" element={<LandingPage />} />
+        <Route path="/login" element={<PrivateRoute element={<Login />} />} />
+        <Route
+          path="/signup"
+          element={<PrivateRoute element={<SignupPage />} />}
+        />
+      </Routes>
     </>
   );
-}
+};
 
 export default App;

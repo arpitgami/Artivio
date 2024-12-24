@@ -1,51 +1,52 @@
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-  Button,
-} from "@nextui-org/react";
-import { Link } from "react-router";
+import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "./context/authContext";
 
 export function NavigationPannel() {
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    console.log(isAuthenticated);
+  }, [isAuthenticated]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("loggedInUser");
+    setIsAuthenticated(false);
+  };
+
   return (
-    <div>
-      <Navbar>
-        <NavbarBrand>
-          {/* <AcmeLogo /> */}
-          <p className="font-bold text-inherit">ACME</p>
-        </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem>
-            <Link color="foreground" href="#">
-              Features
+    <nav className="flex items-center justify-between p-4 bg-white border-b border-gray-200">
+      <div className="text-xl font-bold">Logo</div>
+
+      <div className="hidden sm:flex space-x-4">
+        <Link className="text-gray-700 hover:text-blue-500" to="/home">
+          Home
+        </Link>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        {!isAuthenticated ? (
+          <>
+            <Link className="text-gray-700 hover:text-blue-500" to="/login">
+              Login
             </Link>
-          </NavbarItem>
-          <NavbarItem isActive>
-            <Link aria-current="page" href="#">
-              Customers
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="#">
-              Integrations
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
-        <NavbarContent justify="end">
-          <NavbarItem className="hidden lg:flex">
-            <Link href="#">Login</Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Button as={Link} color="primary" href="#" variant="flat">
+            <Link
+              className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              to="/signup"
+            >
               Sign Up
-            </Button>
-          </NavbarItem>
-        </NavbarContent>
-      </Navbar>
-    </div>
+            </Link>
+          </>
+        ) : (
+          <button
+            className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        )}
+      </div>
+    </nav>
   );
 }

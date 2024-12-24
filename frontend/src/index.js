@@ -4,15 +4,16 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { NextUIProvider } from "@nextui-org/react";
-import { LandingPage } from "./LandingPage.js";
+import { AuthProvider } from "./context/authContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <NextUIProvider>
-        <LandingPage />
-        {/* <App /> */}
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </NextUIProvider>
     </BrowserRouter>
   </React.StrictMode>

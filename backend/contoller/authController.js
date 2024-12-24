@@ -6,7 +6,6 @@ exports.signUp = async (req, res) => {
   try {
     const email = req.body.email;
     const check = await User.findOne({ email });
-    console.log("check");
     if (check) {
       return res.json({
         message: "User already exist, you can login",
@@ -35,6 +34,7 @@ exports.signUp = async (req, res) => {
     res
       .json({
         token: user.token,
+        username: user.username,
         message: "Signup successfully",
         success: true,
       })
@@ -79,6 +79,7 @@ exports.login = async (req, res) => {
       res
         .json({
           token: user.token,
+          username: user.username,
           message: "Login successfully",
           success: true,
         })

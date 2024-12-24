@@ -1,4 +1,3 @@
-import image from "./Image.png";
 export function PosterCard({ poster }) {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden text-center w-72 relative">
