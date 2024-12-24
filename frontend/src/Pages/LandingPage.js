@@ -1,11 +1,14 @@
 import { NavigationPannel } from "../NavigationPannel";
 import "../App.css";
 import { PosterCard } from "../PosterCard";
+import { PosterPage } from "./Posterpage";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate, Navigate } from "react-router-dom";
 
 export function LandingPage() {
   const [posters, setPosters] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios("http://localhost:8080/posters")
@@ -22,7 +25,13 @@ export function LandingPage() {
       </div>
       {posters &&
         posters.map((poster) => (
-          <PosterCard key={poster._id} poster={poster} />
+          <button
+            onClick={() => {
+              navigate(`/poster/${poster._id}`);
+            }}
+          >
+            <PosterCard key={poster._id} poster={poster} />
+          </button>
         ))}
     </div>
   );

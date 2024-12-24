@@ -19,3 +19,12 @@ exports.getAllPoster = async (req, res) => {
     console.error("Error fetching posters:", err);
   }
 };
+exports.getPoster = async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const poster = await Poster.find({ _id });
+    res.json(poster);
+  } catch (err) {
+    console.error("Error fetching posters:", err);
+  }
+};
