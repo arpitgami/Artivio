@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const posterSchema = new mongoose.Schema({
-  image: {
+  imageURL: {
     type: String, // URLto the image
     required: true,
   },

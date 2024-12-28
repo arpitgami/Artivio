@@ -8,6 +8,7 @@
     "cra-template": "1.2.0",
     "fabric": "^6.5.3",
     "framer-motion": "^11.15.0",
+    "pako": "^2.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.0.2",

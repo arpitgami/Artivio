@@ -6,6 +6,7 @@ const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { auth } = require("./middleware/auth");
 
 //database connection
 main().catch((err) => console.log(err));
@@ -19,10 +20,13 @@ async function main() {
 }
 
 server.use(cors());
-server.use(express.json()); //body parser
+server.use(express.json({ limit: "50mb" })); //body parser
 
 server.use("/auth", authRoutes);
 server.use("/", posterRoutes);
 server.use("/", userRoutes);
+server.get("/checktoken", auth, (req, res) =>
+  res.json({ message: "Token is valid", success: true })
+);
 
 server.listen(8080);

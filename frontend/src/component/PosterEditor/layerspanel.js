@@ -62,7 +62,7 @@ export function Layers({ canvas }) {
     }
   }
   function moveLayer(st) {
-    console.log(selectedLayer);
+    // console.log(selectedLayer);
     if (!selectedLayer) return;
 
     const objects = canvas.getObjects();
@@ -70,7 +70,7 @@ export function Layers({ canvas }) {
     const object = canvas.getObjects().find((obj) => obj.id === selectedLayer);
     const index = objects.indexOf(object);
 
-    console.log(index);
+    // console.log(index);
 
     const newObjects = objects;
     if (st === "up" && index < objects.length - 1) {
@@ -82,7 +82,7 @@ export function Layers({ canvas }) {
       newObjects[index] = newObjects[index - 1];
       newObjects[index - 1] = temp;
     }
-    console.log(newObjects);
+    // console.log(newObjects);
     const bgcolor = canvas.backgroundColor;
     canvas.clear();
 

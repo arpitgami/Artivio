@@ -2,21 +2,30 @@ const model = require("../models/posters");
 const Poster = model.Poster;
 const mongoose = require("mongoose");
 
-exports.createPoster = (req, res) => {
+module.exports.createPoster = async (req, res) => {
   try {
     const poster = new Poster(req.body);
-    poster.save();
+    await poster.save();
+    res
+      .status(200)
+      .json({ message: "Poster data saved successfully!", success: true });
   } catch (err) {
-    console.log("Not able to save");
+    console.log("Not able to save poster info");
+    res.status(500).json({
+      message: "Not able to save poster info",
+      err: err.message,
+      success: false,
+    });
   }
 };
 
-exports.getAllPoster = async (req, res) => {
+module.exports.getAllPoster = async (req, res) => {
   try {
     const posters = await Poster.find();
     res.json(posters);
   } catch (err) {
     console.error("Error fetching posters:", err);
+    res.json({ message: "Error fetching posters", success: false });
   }
 };
 exports.getPoster = async (req, res) => {
@@ -26,5 +35,6 @@ exports.getPoster = async (req, res) => {
     res.json(poster);
   } catch (err) {
     console.error("Error fetching posters:", err);
+    res.json({ message: "Error fetching poster", success: false });
   }
 };

@@ -25,7 +25,7 @@ const App = () => {
           element={<PrivateRoute element={<SignupPage />} />}
         />
         <Route path="/poster/:id" element={<PosterPage />} />
-        <Route path="/editor" element={<PosterEditor />} />
+        <Route path="/editor/:id" element={<PosterEditor />} />
       </Routes>
     </>
   );

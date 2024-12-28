@@ -43,8 +43,16 @@ export function PosterPage() {
     );
   }
 
-  function handleCustomize() {
-    navigate("/editor");
+  async function handleCustomize() {
+    const res = await axios.get("http://localhost:8080/checktoken", {
+      headers: { Authorization: localStorage.getItem("token") },
+    });
+    if (!res.data.success) {
+      alert("Please login to customize the poster.");
+      navigate("/login");
+      return;
+    }
+    navigate(`/editor/${id}`);
   }
 
   return (
@@ -53,10 +61,9 @@ export function PosterPage() {
       <div className="bg-gray-100 flex items-center justify-center h-screen">
         <div className="bg-white rounded-lg shadow-lg flex flex-col md:flex-row w-4/5 md:w-2/3 lg:w-1/2 overflow-hidden">
           <div className="bg-gray-200 w-full md:w-1/2 flex items-center justify-center">
-            {/* Aspect Ratio Container for Image */}
             <div className="relative w-full h-0 pb-[125%] bg-gray-300 rounded-lg overflow-hidden">
               <img
-                src={poster.image}
+                src={poster.imageURL}
                 alt={poster.posterName}
                 className="absolute inset-0 w-full h-full object-cover"
               />
@@ -74,6 +81,7 @@ export function PosterPage() {
             </p>
 
             <p className="text-xl font-bold text-gray-800 mb-6">
+              <span>Rs. </span>
               {poster.price}
             </p>
 

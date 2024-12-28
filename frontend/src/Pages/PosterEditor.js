@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { Canvas, Rect, FabricObject } from "fabric";
 import "../App.css";
 import { Settings } from "../component/PosterEditor/settings";
 import { Layers } from "../component/PosterEditor/layerspanel";
 import { AddImage } from "../component/PosterEditor/addimage";
-// import { fabric } from "fabric";
+import { handlesavecanvas } from "../component/PosterEditor/handlesavecanvas";
+import { useParams } from "react-router-dom";
+import { handleloadcanvas } from "../component/PosterEditor/handleloadcanvas";
 
 FabricObject.prototype.toObject = (function (toObject) {
   return function () {
@@ -17,8 +19,11 @@ FabricObject.prototype.toObject = (function (toObject) {
 })(FabricObject.prototype.toObject);
 
 export function PosterEditor() {
+  const { id } = useParams();
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
+  const [isdesigner, setIsDesigner] = useState("false");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -38,6 +43,12 @@ export function PosterEditor() {
     }
   }, []);
 
+  useEffect(() => {
+    if (canvas) {
+      handleloadcanvas(id, canvas, setIsLoading);
+    }
+  }, [canvas]);
+
   function addRectangle() {
     if (canvas) {
       const rect = new Rect({
@@ -52,34 +63,13 @@ export function PosterEditor() {
     }
   }
 
-  const [jsoncanvas, setJsoncanvas] = useState("");
-
-  function saveCanvas() {
-    const json = JSON.stringify(canvas.toJSON());
-    setJsoncanvas(json);
-  }
-
-  function loadCanvas() {
-    canvas.clear();
-
-    canvas
-      .loadFromJSON(jsoncanvas, function (o, object) {
-        console.log(o.id);
-        if (o.id) {
-          object.id = o.id; // Restore custom 'id'
-        }
-        if (o.zIndex !== undefined) {
-          object.zIndex = o.zIndex; // Restore custom 'zIndex'
-        }
-      })
-      .then((res) => {
-        canvas.renderAll();
-        console.log("Canvas reloaded successfully.");
-      });
-  }
-
   return (
     <>
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white z-50">
+          <div className=" text-black">Loading...</div>
+        </div>
+      )}
       <AddImage canvas={canvas}></AddImage>
       <div className="flex flex-row items-center justify-center bg-slate-700 h-screen ">
         <button className="text-white" onClick={() => addRectangle()}>
@@ -90,11 +80,11 @@ export function PosterEditor() {
           <Settings canvas={canvas}></Settings>
           <Layers canvas={canvas}></Layers>
         </div>
-        <button className="text-white m-4" onClick={saveCanvas}>
+        <button
+          className="text-white m-4"
+          onClick={() => handlesavecanvas(canvas, isdesigner)}
+        >
           save
-        </button>
-        <button className="text-white m-4" onClick={loadCanvas}>
-          reload
         </button>
       </div>
     </>
