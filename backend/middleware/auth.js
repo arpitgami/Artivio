@@ -1,4 +1,5 @@
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
+
 exports.auth = (req, res, next) => {
   const auth = req.headers.authorization;
   if (!auth) {
@@ -8,9 +9,6 @@ exports.auth = (req, res, next) => {
     });
   }
   try {
-    // console.log(auth);
-    // const token = auth.split("Bearer ")[1];
-    // console.log(token);
     const decoded = jwt.verify(auth, process.env.SECRETKEY);
     console.log(decoded);
     req.email = decoded.email;

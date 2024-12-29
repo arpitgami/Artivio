@@ -10,8 +10,11 @@ import { PosterPage } from "./Pages/Posterpage";
 const App = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
-  function PrivateRoute({ element }) {
+  function LoginandSignupRoute({ element }) {
     return isAuthenticated ? <Navigate to="/home" /> : element;
+  }
+  function RedirecttoLogin({ element }) {
+    return isAuthenticated ? element : <Navigate to="/login" />;
   }
   return (
     <>
@@ -19,13 +22,23 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<LandingPage />} />
-        <Route path="/login" element={<PrivateRoute element={<Login />} />} />
+        <Route
+          path="/login"
+          element={<LoginandSignupRoute te element={<Login />} />}
+        />
         <Route
           path="/signup"
-          element={<PrivateRoute element={<SignupPage />} />}
+          element={<LoginandSignupRoute element={<SignupPage />} />}
         />
         <Route path="/poster/:id" element={<PosterPage />} />
-        <Route path="/editor/:id" element={<PosterEditor />} />
+        <Route
+          path="/editor/:id"
+          element={
+            // <RedirecttoLogin element={
+            <PosterEditor />
+            // } />
+          }
+        />
       </Routes>
     </>
   );

@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { auth } = require("./middleware/auth");
+const { signaturecontroller } = require("./controllers/signaturecontroller");
 
 //database connection
 main().catch((err) => console.log(err));
@@ -26,7 +27,8 @@ server.use("/auth", authRoutes);
 server.use("/", posterRoutes);
 server.use("/", userRoutes);
 server.get("/checktoken", auth, (req, res) =>
-  res.json({ message: "Token is valid", success: true })
+  res.json({ message: "Token is valid", success: true, email: req.email })
 );
+server.post("/generate-signature", auth, signaturecontroller);
 
 server.listen(8080);

@@ -5,7 +5,9 @@
   "dependencies": {
     "@nextui-org/react": "^2.6.8",
     "axios": "^1.7.9",
+    "cloudinary": "^2.5.1",
     "cra-template": "1.2.0",
+    "dotenv": "^16.4.7",
     "fabric": "^6.5.3",
     "framer-motion": "^11.15.0",
     "pako": "^2.1.0",

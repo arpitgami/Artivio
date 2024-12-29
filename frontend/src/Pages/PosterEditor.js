@@ -20,9 +20,10 @@ FabricObject.prototype.toObject = (function (toObject) {
 
 export function PosterEditor() {
   const { id } = useParams();
+  const posterID = id;
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
-  const [isdesigner, setIsDesigner] = useState("false");
+  const [isdesigner, setIsDesigner] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export function PosterEditor() {
 
   useEffect(() => {
     if (canvas) {
-      handleloadcanvas(id, canvas, setIsLoading);
+      handleloadcanvas(posterID, canvas, setIsLoading);
     }
   }, [canvas]);
 
@@ -82,7 +83,7 @@ export function PosterEditor() {
         </div>
         <button
           className="text-white m-4"
-          onClick={() => handlesavecanvas(canvas, isdesigner)}
+          onClick={() => handlesavecanvas(posterID, canvas, isdesigner)}
         >
           save
         </button>

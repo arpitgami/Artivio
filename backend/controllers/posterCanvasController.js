@@ -16,8 +16,8 @@ exports.save_meta_data_of_chunk = async (req, res) => {
 exports.get_meta_data_of_chunk = async (req, res) => {
   // console.log("check");
   try {
+    console.log(req.query);
     const posterid = req.query.posterid;
-    // console.log(posterid);
     const chunksMetadata = await Postercanvas.find({ posterid }).sort(
       "chunknumber"
     );
