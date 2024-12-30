@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { LandingPage } from "./Pages/LandingPage";
 import { PosterEditor } from "./Pages/PosterEditor";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -7,6 +7,8 @@ import SignupPage from "./Pages/signup";
 import { AuthContext } from "./context/authContext";
 import RefreshHandler from "./refreshHandler";
 import { PosterPage } from "./Pages/Posterpage";
+import DesignerSignup from "./Pages/DesignerSignupPage";
+import { YourDesignsPage } from "./Pages/YourDesignsPage";
 const App = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
@@ -31,6 +33,8 @@ const App = () => {
           element={<LoginandSignupRoute element={<SignupPage />} />}
         />
         <Route path="/poster/:id" element={<PosterPage />} />
+        <Route path="/Contact" element={<DesignerSignup />} />
+        <Route path="/home/yourdesign" element={<YourDesignsPage />} />
         <Route
           path="/editor/:id"
           element={

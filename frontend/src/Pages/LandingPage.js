@@ -29,11 +29,12 @@ export function LandingPage() {
       {posters &&
         posters.map((poster) => (
           <button
+            key={poster._id}
             onClick={() => {
               navigate(`/poster/${poster._id}`);
             }}
           >
-            <PosterCard key={poster._id} poster={poster} />
+            <PosterCard poster={poster} />
           </button>
         ))}
     </div>

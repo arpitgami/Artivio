@@ -32,11 +32,10 @@ export const Login = () => {
         data: JSON.stringify(info),
       });
       if (res.data.success) {
+        console.log(res.data);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loggedInUser", res.data.username);
-        setTimeout(() => {
-          navigate("/home");
-        }, 2000);
+        res.data.isdesigner ? navigate(`/home/yourdesign`) : navigate("/home");
       } else {
         alert(res.data.message);
       }

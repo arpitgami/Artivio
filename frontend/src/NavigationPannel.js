@@ -1,18 +1,32 @@
-import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./context/authContext";
+import axios from "axios";
 
 export function NavigationPannel() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const [isdesigner, setIsDesigner] = useState(false);
+  const [userid, setUserid] = useState(null);
 
+  const navigate = useNavigate();
   useEffect(() => {
-    console.log(isAuthenticated);
-  }, [isAuthenticated]);
+    axios
+      .get("http://localhost:8080/user", {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((res) => {
+        if (res.data.isdesigner) {
+          setIsDesigner(true);
+          setUserid(res.data.id);
+        }
+      });
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("loggedInUser");
     setIsAuthenticated(false);
+    navigate("/home");
   };
 
   return (
@@ -23,6 +37,20 @@ export function NavigationPannel() {
         <Link className="text-gray-700 hover:text-blue-500" to="/home">
           Home
         </Link>
+
+        {isdesigner && (
+          <Link
+            className="text-gray-700 hover:text-blue-500"
+            to="/home/yourdesign"
+          >
+            My Designs
+          </Link>
+        )}
+        {!isdesigner && (
+          <Link className="text-gray-700 hover:text-blue-500" to="/contact">
+            Contact
+          </Link>
+        )}
       </div>
 
       <div className="flex items-center space-x-4">

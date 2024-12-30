@@ -21,6 +21,30 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
   });
   console.log("User:", user.data);
 
+  const previouschunks = await axios.get(
+    `http://localhost:8080/posters/getchunksbyuser?userid=${user.data._id}&posterid=${posterID}`,
+    {
+      headers: { Authorization: localStorage.getItem("token") },
+    }
+  );
+  const previousChunks = previouschunks.data;
+  console.log("Previous chunks:", previousChunks);
+
+  if (previousChunks.length > 0) {
+    try {
+      const deleteResponse = await axios.post(
+        "http://localhost:8080/posters/deletechunksofuser",
+        {
+          chunks: previousChunks,
+        },
+        { headers: { Authorization: localStorage.getItem("token") } }
+      );
+      console.log("Deleted previous chunks:", deleteResponse.data);
+    } catch (error) {
+      console.error("Error deleting previous chunks:", error.response.data);
+    }
+  }
+
   for (let i = 0; i < chunks.length; i++) {
     const publicId = `${user.data._id}_${posterID}_chunk_${i}`;
     const blob = new Blob([chunks[i]], { type: "application/gzip" });
