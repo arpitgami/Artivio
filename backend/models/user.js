@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Enter the password"],
   },
   token: String,
+  isdesigner: { type: Boolean, default: false },
 });
 
 const User = mongoose.model("user", userSchema);

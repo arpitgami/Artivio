@@ -15,6 +15,10 @@ const posterSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  designerid: {
+    type: String,
+    required: true,
+  },
   price: {
     type: Number,
     required: true,

@@ -30,15 +30,15 @@ exports.signUp = async (req, res) => {
         console.log("password not bcryted");
       });
 
-    await user.save();
-    res
-      .json({
-        token: user.token,
-        username: user.username,
+    await user.save().then((savedUser) => {
+      res.status(200).json({
+        token: savedUser.token,
+        username: savedUser.username,
+        id: savedUser._id,
         message: "Signup successfully",
         success: true,
-      })
-      .status(200);
+      });
+    });
   } catch (err) {
     if (err.name === "ValidationError") {
       // Handle Mongoose validation errors
@@ -75,15 +75,16 @@ exports.login = async (req, res) => {
         { expiresIn: "24h" }
       );
       user.token = token;
-      await user.save();
-      res
-        .json({
-          token: user.token,
-          username: user.username,
+      await user.save().then((savedUser) => {
+        res.status(200).json({
+          token: savedUser.token,
+          isdesigner: savedUser.isdesigner,
+          username: savedUser.username,
+          id: savedUser._id,
           message: "Login successfully",
           success: true,
-        })
-        .status(200);
+        });
+      });
     } else {
       res.json({
         message: "Wrong Password",

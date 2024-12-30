@@ -38,3 +38,13 @@ exports.getPoster = async (req, res) => {
     res.json({ message: "Error fetching poster", success: false });
   }
 };
+exports.getPosterByDesignerId = async (req, res) => {
+  try {
+    const designerid = req.params.id;
+    const poster = await Poster.find({ designerid: designerid });
+    res.json(poster);
+  } catch (err) {
+    console.error("Error fetching posters:", err);
+    res.json({ message: "Error fetching poster", success: false });
+  }
+};

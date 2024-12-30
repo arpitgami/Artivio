@@ -13,8 +13,20 @@ router
     auth,
     posterCanvasController.get_meta_data_of_chunk
   )
-  .get("/posters/:id", postersController.getPoster)
+  .get(
+    "/posters/getchunksbyuser",
+    auth,
+    userEditsController.get_meta_data_of_chunk
+  )
+  .post(
+    "/posters/deletechunksofdesigner",
+    auth,
+    posterCanvasController.delete_chunks
+  )
+  .post("/posters/deletechunksofuser", auth, userEditsController.delete_chunks)
   .post("/posters", postersController.createPoster)
+  .get("/posters/:id", postersController.getPoster)
+  .get("/posters/designs/:id", postersController.getPosterByDesignerId)
   .post(
     "/posters/savechunkfromuser",
     userEditsController.save_meta_data_of_chunk
