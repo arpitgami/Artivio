@@ -9,6 +9,7 @@ import RefreshHandler from "./refreshHandler";
 import { PosterPage } from "./Pages/Posterpage";
 import DesignerSignup from "./Pages/DesignerSignupPage";
 import { YourDesignsPage } from "./Pages/YourDesignsPage";
+import UploadPage from "./Pages/PosterUploadPage";
 const App = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/poster/:id" element={<PosterPage />} />
         <Route path="/Contact" element={<DesignerSignup />} />
         <Route path="/home/yourdesign" element={<YourDesignsPage />} />
+        <Route path="/home/yourdesign/upload" element={<UploadPage />} />
         <Route
           path="/editor/:id"
           element={

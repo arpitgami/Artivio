@@ -23,7 +23,7 @@ export function YourDesignsPage() {
     axios(`http://localhost:8080/posters/designs/${designerId}`)
       .then((res) => {
         setPosterData(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => console.log("Didnt get posters"));
   }, [designerId]);

@@ -20,9 +20,12 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
     headers: { Authorization: localStorage.getItem("token") },
   });
   console.log("User:", user.data);
+  const previousChunksURL = isdesigner
+    ? "http://localhost:8080/posters/getchunksbydesigner"
+    : "http://localhost:8080/posters/getchunksbyuser";
 
   const previouschunks = await axios.get(
-    `http://localhost:8080/posters/getchunksbyuser?userid=${user.data._id}&posterid=${posterID}`,
+    previousChunksURL + `?userid=${user.data._id}&posterid=${posterID}`,
     {
       headers: { Authorization: localStorage.getItem("token") },
     }
@@ -32,8 +35,11 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
 
   if (previousChunks.length > 0) {
     try {
+      const deletechunkURL = isdesigner
+        ? "http://localhost:8080/posters/deletechunksofdesigner"
+        : "http://localhost:8080/posters/deletechunksofuser";
       const deleteResponse = await axios.post(
-        "http://localhost:8080/posters/deletechunksofuser",
+        deletechunkURL,
         {
           chunks: previousChunks,
         },
@@ -51,13 +57,11 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
 
     try {
       // Step 1: Get signed parameters from the backend
-      const timestamp = Math.floor(Date.now() / 1000);
 
       const signatureResponse = await axios.post(
         "http://localhost:8080/generate-signature",
         {
           public_id: publicId,
-          timestamp,
           upload_preset: isdesigner
             ? "Artivio_designeredit_preset"
             : "Artivio_useredits_preset",
@@ -66,7 +70,7 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
       );
       console.log(`Got signature for chunk ${i + 1}:`, signatureResponse.data);
 
-      const { signature, cloud_name, upload_preset } = signatureResponse.data;
+      const { signature, timestamp, upload_preset } = signatureResponse.data;
 
       // Step 2: Upload to Cloudinary with signed parameters
       const formData = new FormData();
@@ -92,7 +96,6 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
 
       // Step 3: Save metadata to the backend
       const data = {
-        // isdesigner ? designerid : userid  : user.data.userid,
         posterid: posterID,
         chunkjson: cloudinaryUrl,
         chunknumber: i,
@@ -106,7 +109,10 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
       const URL = isdesigner
         ? "http://localhost:8080/posters/savechunkfromdesigner"
         : "http://localhost:8080/posters/savechunkfromuser";
-      const backendResponse = await axios.post(URL, data);
+
+      const backendResponse = await axios.post(URL, data, {
+        headers: { Authorization: localStorage.getItem("token") },
+      });
 
       console.log(`Uploaded chunk ${i + 1}:`, backendResponse.data);
     } catch (error) {

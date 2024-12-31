@@ -54,6 +54,14 @@ export function NavigationPannel() {
       </div>
 
       <div className="flex items-center space-x-4">
+        {isdesigner && (
+          <Link
+            className="text-gray-700 hover:text-blue-500"
+            to="/home/yourdesign/upload"
+          >
+            Upload
+          </Link>
+        )}
         {!isAuthenticated ? (
           <>
             <Link className="text-gray-700 hover:text-blue-500" to="/login">

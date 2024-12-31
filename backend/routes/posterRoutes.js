@@ -24,15 +24,17 @@ router
     posterCanvasController.delete_chunks
   )
   .post("/posters/deletechunksofuser", auth, userEditsController.delete_chunks)
-  .post("/posters", postersController.createPoster)
+  .post("/posters", auth, postersController.createPoster)
   .get("/posters/:id", postersController.getPoster)
   .get("/posters/designs/:id", postersController.getPosterByDesignerId)
   .post(
     "/posters/savechunkfromuser",
+    auth,
     userEditsController.save_meta_data_of_chunk
   )
   .post(
     "/posters/savechunkfromdesigner",
+    auth,
     posterCanvasController.save_meta_data_of_chunk
   );
 

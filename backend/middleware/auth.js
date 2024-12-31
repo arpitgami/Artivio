@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 exports.auth = (req, res, next) => {
   const auth = req.headers.authorization;
+  // console.log("auth", auth);
   if (!auth) {
     return res.json({
       message: "Token not found, Not Authorized",
@@ -10,7 +11,7 @@ exports.auth = (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(auth, process.env.SECRETKEY);
-    console.log(decoded);
+    // console.log(decoded);
     req.email = decoded.email;
     next();
   } catch (err) {

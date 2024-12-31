@@ -7,6 +7,7 @@ import { AddImage } from "../component/PosterEditor/addimage";
 import { handlesavecanvas } from "../component/PosterEditor/handlesavecanvas";
 import { useParams } from "react-router-dom";
 import { handleloadcanvas } from "../component/PosterEditor/handleloadcanvas";
+import axios from "axios";
 
 FabricObject.prototype.toObject = (function (toObject) {
   return function () {
@@ -23,8 +24,19 @@ export function PosterEditor() {
   const posterID = id;
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
-  const [isdesigner, setIsDesigner] = useState(false);
+  const [isdesigner, setIsDesigner] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/user", {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((res) => {
+        // console.log(res.data);
+        setIsDesigner(res.data.isdesigner);
+      });
+  }, []);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -46,9 +58,9 @@ export function PosterEditor() {
 
   useEffect(() => {
     if (canvas) {
-      handleloadcanvas(posterID, canvas, setIsLoading);
+      handleloadcanvas(posterID, canvas, setIsLoading, isdesigner);
     }
-  }, [canvas]);
+  }, [isdesigner, canvas]);
 
   function addRectangle() {
     if (canvas) {
@@ -71,6 +83,7 @@ export function PosterEditor() {
           <div className=" text-black">Loading...</div>
         </div>
       )}
+      {isdesigner && <div> Upload your posters layers</div>}
       <AddImage canvas={canvas}></AddImage>
       <div className="flex flex-row items-center justify-center bg-slate-700 h-screen ">
         <button className="text-white" onClick={() => addRectangle()}>

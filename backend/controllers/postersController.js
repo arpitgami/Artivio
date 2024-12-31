@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 module.exports.createPoster = async (req, res) => {
   try {
+    console.log("Poster data received:", req.body);
     const poster = new Poster(req.body);
     await poster.save();
     res

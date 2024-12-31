@@ -8,13 +8,15 @@ cloudinary.config({
 
 exports.signaturecontroller = (req, res) => {
   console.log("Request body: ", req.body);
-  const { public_id, timestamp, upload_preset } = req.body;
+  const { public_id, upload_preset } = req.body;
+  const timestamp = Math.floor(Date.now() / 1000);
 
   const paramsToSign = {
-    public_id: public_id,
-    timestamp: Math.floor(Date.now() / 1000),
+    ...(public_id && { public_id }),
+    timestamp: timestamp,
     upload_preset: upload_preset,
   };
+
   const signature = cloudinary.utils.api_sign_request(
     paramsToSign,
     cloudinary.config().api_secret
@@ -23,7 +25,7 @@ exports.signaturecontroller = (req, res) => {
   res.json({
     signature,
     timestamp,
-    public_id,
+    ...(public_id && { public_id }),
     cloud_name: cloudinary.config().cloud_name,
     upload_preset: upload_preset,
   });

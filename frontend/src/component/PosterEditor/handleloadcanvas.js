@@ -1,8 +1,23 @@
 import pako from "pako";
 import axios from "axios";
 
-export async function handleloadcanvas(posterID, canvas, setIsLoading) {
+export async function handleloadcanvas(
+  posterID,
+  canvas,
+  setIsLoading,
+  isdesigner
+) {
+  if (isdesigner === null) {
+    // setIsLoading(false);
+    return;
+  }
+  if (isdesigner === true) {
+    setIsLoading(false);
+    return;
+  }
   try {
+    console.log(isdesigner);
+    console.log("Loading canvas data for poster:", posterID);
     const downloadedChunks = [];
     const sortedChunks = await axios.get(
       `http://localhost:8080/posters/getchunksbydesigner?posterid=${posterID}`,
