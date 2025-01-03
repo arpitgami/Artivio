@@ -1,4 +1,4 @@
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LandingPage } from "./Pages/LandingPage";
 import { PosterEditor } from "./Pages/PosterEditor";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -10,6 +10,9 @@ import { PosterPage } from "./Pages/Posterpage";
 import DesignerSignup from "./Pages/DesignerSignupPage";
 import { YourDesignsPage } from "./Pages/YourDesignsPage";
 import UploadPage from "./Pages/PosterUploadPage";
+import MyEdits from "./Pages/MyEdits";
+import CartItem from "./Pages/Cart.js";
+
 const App = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
@@ -37,6 +40,9 @@ const App = () => {
         <Route path="/Contact" element={<DesignerSignup />} />
         <Route path="/home/yourdesign" element={<YourDesignsPage />} />
         <Route path="/home/yourdesign/upload" element={<UploadPage />} />
+        <Route path="/home/yourdesign/upload/:id" element={<PosterEditor />} />
+        <Route path="/home/myedits" element={<MyEdits />} />
+        <Route path="/cart" element={<CartItem />} />
         <Route
           path="/editor/:id"
           element={

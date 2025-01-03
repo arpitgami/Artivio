@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const UploadPage = () => {
+  const [initialState, setInitialState] = useState();
   const [image, setImage] = useState(null); // State for uploaded image
   const [posterData, setPosterData] = useState({
     posterName: "",
@@ -67,12 +68,6 @@ const UploadPage = () => {
           },
         }
       );
-      // const uploadResponse = await axios.post(
-      //   `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-      //   {
-      //     data: formData,
-      //   }
-      // );
 
       const data = cloudinaryResponse.data;
 
@@ -100,7 +95,7 @@ const UploadPage = () => {
           }
         );
         console.log("res", res);
-        alert("Image uploaded successfully!");
+        navigate(`/home/yourdesign/upload/${res.data.posterid}`);
       } else {
         alert("Image upload failed!");
       }

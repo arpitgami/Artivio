@@ -3,6 +3,7 @@ const router = express.Router();
 
 const postersController = require("../controllers/postersController.js");
 const userEditsController = require("../controllers/userEditsController");
+const userEditsImageController = require("../controllers/userEditsImageController");
 const posterCanvasController = require("../controllers/posterCanvasController");
 const { auth } = require("../middleware/auth.js");
 
@@ -25,6 +26,8 @@ router
   )
   .post("/posters/deletechunksofuser", auth, userEditsController.delete_chunks)
   .post("/posters", auth, postersController.createPoster)
+  .post("/posters/uploadimage", auth, userEditsImageController.save_image)
+  .get("/posters/uploadimage", auth, userEditsImageController.getAllImage)
   .get("/posters/:id", postersController.getPoster)
   .get("/posters/designs/:id", postersController.getPosterByDesignerId)
   .post(

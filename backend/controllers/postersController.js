@@ -6,10 +6,15 @@ module.exports.createPoster = async (req, res) => {
   try {
     console.log("Poster data received:", req.body);
     const poster = new Poster(req.body);
-    await poster.save();
-    res
-      .status(200)
-      .json({ message: "Poster data saved successfully!", success: true });
+    await poster.save().then((poster) => {
+      res
+        .status(200)
+        .json({
+          message: "Poster data saved successfully!",
+          success: true,
+          posterid: poster._id,
+        });
+    });
   } catch (err) {
     console.log("Not able to save poster info");
     res.status(500).json({

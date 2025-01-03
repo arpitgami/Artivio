@@ -30,15 +30,19 @@ export function YourDesignsPage() {
 
   return (
     <>
-      <NavigationPannel />
-      <div className="flex flex-wrap gap-4 justify-center">
-        {posterData.length > 0 ? (
-          posterData.map((poster) => (
-            <PosterCard key={poster._id} poster={poster} />
-          ))
-        ) : (
-          <div className="text-gray-500 text-center mt-8">No posters found</div>
-        )}
+      <div className="flex flex-col items-center">
+        <NavigationPannel />
+        <div className="flex flex-wrap gap-10 m-8 justify-center">
+          {posterData.length > 0 ? (
+            posterData.map((poster) => (
+              <PosterCard key={poster._id} poster={poster} />
+            ))
+          ) : (
+            <div className="text-gray-500 text-center mt-8">
+              No posters found
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

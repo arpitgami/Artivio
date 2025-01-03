@@ -6,18 +6,20 @@ import axios from "axios";
 export function NavigationPannel() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const [isdesigner, setIsDesigner] = useState(false);
-  const [userid, setUserid] = useState(null);
+  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/user", {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => {
+        setUser(res.data);
         if (res.data.isdesigner) {
           setIsDesigner(true);
-          setUserid(res.data.id);
+          console.log("nav data ", res.data);
         }
       });
   }, []);
@@ -30,59 +32,63 @@ export function NavigationPannel() {
   };
 
   return (
-    <nav className="flex items-center justify-between p-4 bg-white border-b border-gray-200">
-      <div className="text-xl font-bold">Logo</div>
-
-      <div className="hidden sm:flex space-x-4">
-        <Link className="text-gray-700 hover:text-blue-500" to="/home">
-          Home
-        </Link>
-
-        {isdesigner && (
-          <Link
-            className="text-gray-700 hover:text-blue-500"
-            to="/home/yourdesign"
-          >
-            My Designs
-          </Link>
-        )}
-        {!isdesigner && (
-          <Link className="text-gray-700 hover:text-blue-500" to="/contact">
-            Contact
-          </Link>
-        )}
+    <div className="navbar bg-primary text-base-100  ">
+      <div className="navbar-start">
+        <div className="ml-5  text-xl">Artivio</div>
       </div>
-
-      <div className="flex items-center space-x-4">
-        {isdesigner && (
-          <Link
-            className="text-gray-700 hover:text-blue-500"
-            to="/home/yourdesign/upload"
-          >
-            Upload
-          </Link>
-        )}
-        {!isAuthenticated ? (
-          <>
-            <Link className="text-gray-700 hover:text-blue-500" to="/login">
-              Login
-            </Link>
-            <Link
-              className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-              to="/signup"
-            >
-              Sign Up
-            </Link>
-          </>
-        ) : (
-          <button
-            className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        )}
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          <li>
+            <Link to="/home">Home</Link>
+          </li>
+          <li>{isdesigner && <Link to="/home/yourdesign">My Designs</Link>}</li>
+          <li>{!isdesigner && <Link to="/contact">Contact</Link>}</li>
+        </ul>
       </div>
-    </nav>
+      <div className="navbar-end hidden lg:flex">
+        <ul className="menu menu-horizontal px-8">
+          {isdesigner && (
+            <li>
+              <Link to="/home/yourdesign/upload">Upload</Link>
+            </li>
+          )}
+          {!isdesigner && (
+            <li>
+              <Link to="/cart">Cart</Link>
+            </li>
+          )}
+          {isAuthenticated ? (
+            <li>
+              <details>
+                <summary className="">{user && user.username}</summary>
+                <ul className="bg-black rounded-t-none p-2 ">
+                  {!isdesigner && (
+                    <li>
+                      <Link to="/home/myedits">
+                        <span className="w-16">My Edits</span>
+                      </Link>
+                    </li>
+                  )}
+                  <li>
+                    <div className=" text-red-700" onClick={handleLogout}>
+                      Logout
+                    </div>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/signup">Signup</Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+    </div>
   );
 }

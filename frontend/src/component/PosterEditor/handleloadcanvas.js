@@ -5,7 +5,9 @@ export async function handleloadcanvas(
   posterID,
   canvas,
   setIsLoading,
-  isdesigner
+  isdesigner,
+  paramValue,
+  userid
 ) {
   if (isdesigner === null) {
     // setIsLoading(false);
@@ -19,15 +21,14 @@ export async function handleloadcanvas(
     console.log(isdesigner);
     console.log("Loading canvas data for poster:", posterID);
     const downloadedChunks = [];
-    const sortedChunks = await axios.get(
-      `http://localhost:8080/posters/getchunksbydesigner?posterid=${posterID}`,
-      {
-        headers: {
-          authorization: localStorage.getItem("token"),
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const chunksURL = paramValue
+      ? `http://localhost:8080/posters/getchunksbyuser?posterid=${posterID}&userid=${userid}`
+      : `http://localhost:8080/posters/getchunksbydesigner?posterid=${posterID}`;
+    const sortedChunks = await axios.get(chunksURL, {
+      headers: {
+        authorization: localStorage.getItem("token"),
+      },
+    });
 
     for (const chunk of sortedChunks.data) {
       const chunkResponse = await axios.get(chunk.chunkjson, {

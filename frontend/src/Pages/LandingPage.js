@@ -26,7 +26,7 @@ export function LandingPage() {
         <h1 className="text-7xl text-slate-50"> Artivio </h1>
         <p className=" text-slate-50"> Art That's Uniquely Yours. </p>
       </div>
-      {posters &&
+      {posters.length > 0 &&
         posters.map((poster) => (
           <button
             key={poster._id}
