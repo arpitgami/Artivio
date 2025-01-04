@@ -1,5 +1,5 @@
 import { use, useEffect, useRef, useState } from "react";
-import { Canvas, Rect, FabricObject } from "fabric";
+import { Canvas, Rect, FabricObject, Circle } from "fabric";
 import "../App.css";
 import { Settings } from "../component/PosterEditor/settings";
 import { Layers } from "../component/PosterEditor/layerspanel";
@@ -7,9 +7,10 @@ import { AddImage } from "../component/PosterEditor/addimage";
 import { handlesavecanvas } from "../component/PosterEditor/handlesavecanvas";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { handleloadcanvas } from "../component/PosterEditor/handleloadcanvas";
-import { useSearchParams } from "react-router-dom";
-
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import { Addtext } from "../component/PosterEditor/addtext";
 
 FabricObject.prototype.toObject = (function (toObject) {
   return function () {
@@ -52,8 +53,8 @@ export function PosterEditor() {
   useEffect(() => {
     if (canvasRef.current) {
       const initCanvas = new Canvas(canvasRef.current, {
-        width: 400,
-        height: 500,
+        width: 480,
+        height: 600,
         preserveObjectStacking: true,
       });
 
@@ -93,6 +94,19 @@ export function PosterEditor() {
       canvas.add(rect);
     }
   }
+  function addCircle() {
+    if (canvas) {
+      const rect = new Circle({
+        top: 100,
+        left: 100,
+        width: 100,
+        height: 100,
+        fill: "#D84D42",
+      });
+
+      canvas.add(rect);
+    }
+  }
 
   return (
     <>
@@ -101,32 +115,44 @@ export function PosterEditor() {
           <div className=" text-black">Loading...</div>
         </div>
       )}
+
       {isdesigner && <div> Upload your posters layers</div>}
-      <AddImage canvas={canvas}></AddImage>
-      <div className="flex flex-row items-center justify-center bg-slate-700 h-screen ">
-        <button className="text-white" onClick={() => addRectangle()}>
-          Rectangle
-        </button>
-        <canvas id="canvas" ref={canvasRef} />
-        <div className="">
-          <Settings canvas={canvas}></Settings>
-          <Layers canvas={canvas}></Layers>
+
+      <div className="flex flex-row items-center justify-center bg-primary h-screen ">
+        <div className="flex flex-col items-center justify-center bg-primary h-screen ">
+          <button
+            className="btn btn-sm text-base-100"
+            onClick={() => addRectangle()}
+          >
+            <FontAwesomeIcon icon={faSquare} style={{ color: "#000000" }} />
+          </button>
+          <Addtext canvas={canvas} />
         </div>
-        <button
-          className="text-white m-4"
-          onClick={() => {
-            handlesavecanvas(posterID, canvas, isdesigner).then((res) => {
-              if (res.success) {
-                alert("Poster uploaded succesfully!!");
-                if (isdesigner) {
-                  navigate("/home/yourdesign");
-                }
-              }
-            });
-          }}
-        >
-          save
-        </button>
+        <canvas id="canvas" ref={canvasRef} />
+        <div className="flex flex-col h-[600px] items-center justify-evenly mx-10">
+          <div>
+            <AddImage canvas={canvas}></AddImage>
+            <div
+              className="btn btn-sm text-primary mx-4"
+              onClick={() => {
+                handlesavecanvas(posterID, canvas, isdesigner).then((res) => {
+                  if (res.success) {
+                    alert("Poster uploaded succesfully!!");
+                    if (isdesigner) {
+                      navigate("/home/yourdesign");
+                    }
+                  }
+                });
+              }}
+            >
+              Save
+            </div>
+          </div>
+          <Settings canvas={canvas}></Settings>
+          <div className="">
+            <Layers canvas={canvas}></Layers>
+          </div>
+        </div>
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box flex flex-col items-center justify-center w-1/4">
             <form method="dialog">

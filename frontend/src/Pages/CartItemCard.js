@@ -72,14 +72,14 @@ export function CartItem({ item }) {
 
       <div>
         <button
-          className="bg-primary p-2 px-3 text-base-100 rounded-full"
+          className="btn bg-base-200 btn-sm btn-circle btn-ghost"
           onClick={() => setQuantity(quantity + 1)}
         >
           +
         </button>
         <span className="mx-2">{quantity}</span>
         <button
-          className="bg-primary p-2 px-3 text-base-100 rounded-full"
+          className="btn bg-base-200 btn-sm btn-circle btn-ghost"
           onClick={() => setQuantity(Math.max(1, quantity - 1))}
         >
           -

@@ -45,11 +45,17 @@ export function AddImage({ canvas }) {
     });
   }
   return (
-    <input
-      type="file"
-      accept="image/*"
-      multiple
-      onChange={handleImages}
-    ></input>
+    <>
+      <label>
+        <div className="btn btn-sm text-primary">Upload</div>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          hidden
+          onChange={handleImages}
+        ></input>
+      </label>
+    </>
   );
 }

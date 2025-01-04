@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Canvas } from "fabric";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 export function Layers({ canvas }) {
   const [layers, setLayers] = useState([]);
   const [selectedLayer, setSelectedLayer] = useState(null);
+  const [visibilityMap, setVisibilityMap] = useState({});
 
   function addLayerId(object) {
     if (!object.id) {
@@ -95,22 +98,71 @@ export function Layers({ canvas }) {
     canvas.renderAll();
   }
 
+  function handledeletelayer(id) {
+    canvas.getObjects().forEach((obj) => {
+      if (obj.id === id) {
+        canvas.remove(obj);
+      }
+    });
+  }
+
+  function handlevisibility(id) {
+    const object = canvas.getObjects().find((obj) => obj.id === id);
+    if (object) {
+      object.visible = !object.visible;
+      canvas.renderAll();
+
+      setVisibilityMap((prev) => ({
+        ...prev,
+        [id]: object.visible,
+      }));
+    }
+  }
+
   return (
-    <div className="Layerspannel">
-      <button onClick={() => moveLayer("up")}>up</button>
-      <button onClick={() => moveLayer("down")}>down</button>
-      <ul>
-        {layers.map((obj) => {
-          return (
-            <li
-              key={obj.id}
-              onClick={() => handleSelectLayer(obj.id)}
-              className={obj.id === selectedLayer ? "selected-layer" : ""}
-            >
-              {obj.type}({obj.zIndex})
-            </li>
-          );
-        })}
+    <div className="w-52 h-72 flex flex-col overflow-hidden bg-base-100 relative">
+      <div className="absolute top-2 right-2 flex gap-2">
+        <button
+          onClick={() => moveLayer("up")}
+          className="btn btn-sm btn-ghost"
+        >
+          Up
+        </button>
+        <button
+          onClick={() => moveLayer("down")}
+          className="btn btn-sm btn-ghost"
+        >
+          Down
+        </button>
+      </div>
+      <ul className="mt-10 overflow-y-auto flex-1 space-y-1 ">
+        {layers.map((obj) => (
+          <li
+            key={obj.id}
+            onClick={() => handleSelectLayer(obj.id)}
+            className={`p-2  ${
+              obj.id === selectedLayer ? " bg-gray-100" : null
+            } cursor-pointer hover:bg-gray-100 flex flex-row justify-between items-center`}
+          >
+            {obj.type} ({obj.zIndex})
+            <span className="flex flex-row gap-2">
+              <FontAwesomeIcon
+                className={` size-4 ${
+                  visibilityMap[obj.id] === false
+                    ? "text-primary-content"
+                    : "text-primary"
+                }  `}
+                onClick={() => handlevisibility(obj.id)}
+                icon={faEye}
+              />
+              <FontAwesomeIcon
+                className="text-primary size-4 "
+                icon={faTrashCan}
+                onClick={() => handledeletelayer(obj.id)}
+              />
+            </span>
+          </li>
+        ))}
       </ul>
     </div>
   );

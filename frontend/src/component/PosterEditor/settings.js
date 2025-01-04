@@ -6,6 +6,7 @@ export function Settings({ canvas }) {
   const [height, setHeight] = useState("");
   const [diameter, setDiameter] = useState("");
   const [color, setColor] = useState("");
+  const [fontSize, setFontSize] = useState(20);
 
   useEffect(() => {
     if (canvas) {
@@ -43,6 +44,10 @@ export function Settings({ canvas }) {
       setColor(object.fill);
       setHeight("");
       setWidth("");
+    } else if (object.type === "text") {
+      // console.log(object);
+      setFontSize(object.fontSize);
+      setColor(object.fill);
     }
   }
 
@@ -51,6 +56,7 @@ export function Settings({ canvas }) {
     setDiameter("");
     setHeight("");
     setWidth("");
+    setFontSize(20);
   }
 
   function handleWidthChange(e) {
@@ -62,6 +68,7 @@ export function Settings({ canvas }) {
       canvas.renderAll();
     }
   }
+
   function handleColorChange(e) {
     setColor(e.target.value);
 
@@ -73,24 +80,82 @@ export function Settings({ canvas }) {
     e.preventDefault();
   }
 
+  function handleFontSizeChange(e) {
+    const newSize = e.target.value;
+    setFontSize(newSize);
+
+    if (selectedObject && selectedObject.type === "text") {
+      selectedObject.set({ fontSize: parseInt(newSize, 10) });
+      canvas.renderAll();
+    }
+  }
+
   return (
     <>
       {selectedObject && selectedObject.type === "rect" && (
         <>
-          <form onSubmit={handleSubmit}>
-            <label>Width : </label>
-            <input
-              label="Width"
-              value={width}
-              onChange={handleWidthChange}
-            ></input>
-            <label>Colour : </label>
-            <input
-              label="Color"
-              type="color"
-              value={color}
-              onChange={handleColorChange}
-            ></input>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-2 items-start"
+          >
+            {/* Rectangle Settings */}
+            <label className="flex flex-row gap-2 items-center justify-around">
+              <span className="text-base-200 text-sm">Width : </span>
+              <input
+                label="Width"
+                value={width}
+                onChange={handleWidthChange}
+                className="input input-xs"
+              />
+            </label>
+            <label>
+              <span className="text-base-200 text-sm">Height : </span>
+              <input
+                label="Width"
+                value={width}
+                onChange={handleWidthChange}
+                className="input input-xs"
+              />
+            </label>
+            <label className="flex flex-row gap-2 items-center justify-around">
+              <span className="text-base-200 text-sm">Color : </span>
+              <input
+                label="Color"
+                type="color"
+                value={color}
+                onChange={handleColorChange}
+                className="input input-xs"
+              />
+            </label>
+          </form>
+        </>
+      )}
+      {selectedObject && selectedObject.type === "text" && (
+        <>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-2 items-start"
+          >
+            {/* Text Settings */}
+            <label className="flex flex-row gap-2 items-center justify-around">
+              <span className="text-base-200 text-sm">Font Size : </span>
+              <input
+                label="Font Size"
+                value={fontSize}
+                onChange={handleFontSizeChange}
+                className="input input-xs"
+              />
+            </label>
+            <label className="flex flex-row gap-2 items-center justify-end">
+              <span className="text-base-200 text-sm">Color : </span>
+              <input
+                label="Color"
+                type="color"
+                value={color}
+                onChange={handleColorChange}
+                className="input input-xs"
+              />
+            </label>
           </form>
         </>
       )}
