@@ -35,8 +35,11 @@ export function PosterEditor() {
 
   // Parse the query string
   const queryParams = new URLSearchParams(location.search);
-  const paramValue = queryParams.get("loaduseredit");
-  // console.log("Query param value:", paramValue);
+  const isloaduseredit = queryParams.get("loaduseredit");
+  const isedit = queryParams.get("edit");
+
+  // console.log()
+  console.log("Query param value:", isloaduseredit, isedit);
 
   useEffect(() => {
     axios
@@ -75,8 +78,9 @@ export function PosterEditor() {
         canvas,
         setIsLoading,
         isdesigner,
-        paramValue,
-        userid
+        isloaduseredit,
+        userid,
+        isedit
       );
     }
   }, [isdesigner, canvas]);
@@ -115,75 +119,90 @@ export function PosterEditor() {
           <div className=" text-black">Loading...</div>
         </div>
       )}
-
-      {isdesigner && <div> Upload your posters layers</div>}
-
-      <div className="flex flex-row items-center justify-center bg-primary h-screen ">
-        <div className="flex flex-col items-center justify-center bg-primary h-screen ">
-          <button
-            className="btn btn-sm text-base-100"
-            onClick={() => addRectangle()}
-          >
-            <FontAwesomeIcon icon={faSquare} style={{ color: "#000000" }} />
-          </button>
-          <Addtext canvas={canvas} />
+      <div className="bg-primary flex flex-col justify-center relative items-center m-0 w-screen h-screen overflow-hidden ">
+        <div
+          className="btn btn-sm btn-primary hover:bg-base-300 hover:text-primary text-base-100 absolute top-10 left-10 "
+          onClick={() => navigate(-1)}
+        >
+          {" "}
+          {`<`}
+          {" back"}
         </div>
-        <canvas id="canvas" ref={canvasRef} />
-        <div className="flex flex-col h-[600px] items-center justify-evenly mx-10">
-          <div>
-            <AddImage canvas={canvas}></AddImage>
-            <div
-              className="btn btn-sm text-primary mx-4"
-              onClick={() => {
-                handlesavecanvas(posterID, canvas, isdesigner).then((res) => {
-                  if (res.success) {
-                    alert("Poster uploaded succesfully!!");
-                    if (isdesigner) {
-                      navigate("/home/yourdesign");
-                    }
-                  }
-                });
-              }}
+        {isdesigner && (
+          <div className="text-base-100 mx-auto text-md font-normal p-2">
+            {" "}
+            Upload your poster's layers
+          </div>
+        )}
+        <div className="flex flex-row items-center justify-center h-[600px] ">
+          <div className="flex flex-col items-center justify-center h-screen">
+            <button
+              className="btn btn-sm text-base-100"
+              onClick={() => addRectangle()}
             >
-              Save
-            </div>
+              <FontAwesomeIcon icon={faSquare} style={{ color: "#000000" }} />
+            </button>
+            <Addtext canvas={canvas} />
           </div>
-          <Settings canvas={canvas}></Settings>
           <div className="">
-            <Layers canvas={canvas}></Layers>
+            <canvas id="canvas" ref={canvasRef} />
           </div>
-        </div>
-        <dialog id="my_modal_3" className="modal">
-          <div className="modal-box flex flex-col items-center justify-center w-1/4">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                ✕
-              </button>
-            </form>
-            <h3 className="font-bold text-xl mb-4">Poster Saved !!</h3>
+          <div className="flex flex-col h-[600px] items-center justify-evenly mx-10">
             <div>
-              <button
-                className="btn mr-4"
+              <AddImage canvas={canvas}></AddImage>
+              <div
+                className="btn btn-sm text-primary mx-4"
                 onClick={() => {
-                  navigate("/home/myedits");
+                  handlesavecanvas(posterID, canvas, isdesigner).then((res) => {
+                    if (res.success) {
+                      alert("Poster uploaded succesfully!!");
+                      if (isdesigner) {
+                        navigate("/home/yourdesign");
+                      }
+                    }
+                  });
                 }}
               >
-                {" "}
-                My Edits
-              </button>
-              <button className="btn ml-4">Add to cart</button>
+                Save
+              </div>
             </div>
-            <p
-              className="py-2 text-sm"
-              onClick={() => {
-                document.getElementById("my_modal_3").close();
-              }}
-            >
-              or continue editing
-            </p>
+            <Settings canvas={canvas}></Settings>
+            <div className="">
+              <Layers canvas={canvas}></Layers>
+            </div>
           </div>
-        </dialog>
+          <dialog id="my_modal_3" className="modal">
+            <div className="modal-box flex flex-col items-center justify-center w-1/4">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                  ✕
+                </button>
+              </form>
+              <h3 className="font-bold text-xl mb-4">Poster Saved !!</h3>
+              <div>
+                <button
+                  className="btn mr-4"
+                  onClick={() => {
+                    navigate("/home/myedits");
+                  }}
+                >
+                  {" "}
+                  My Edits
+                </button>
+                <button className="btn ml-4">Add to cart</button>
+              </div>
+              <p
+                className="py-2 text-sm"
+                onClick={() => {
+                  document.getElementById("my_modal_3").close();
+                }}
+              >
+                or continue editing
+              </p>
+            </div>
+          </dialog>
+        </div>
       </div>
     </>
   );

@@ -13,10 +13,12 @@ export function PosterPage() {
   useEffect(() => {
     const fetchPoster = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/posters/${id}`);
+        const res = await axios.get(`http://localhost:8080/posters/${id}`, {
+          headers: { Authorization: localStorage.getItem("token") },
+        });
         setPoster(res.data[0]);
         setLoading(false);
-        // console.log(res.data);
+        console.log(res.data);
       } catch (err) {
         setError("Poster couldn't be fetched.");
         setLoading(false);

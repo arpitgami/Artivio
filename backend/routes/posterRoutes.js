@@ -28,7 +28,8 @@ router
   .post("/posters", auth, postersController.createPoster)
   .post("/posters/uploadimage", auth, userEditsImageController.save_image)
   .get("/posters/uploadimage", auth, userEditsImageController.getAllImage)
-  .get("/posters/:id", postersController.getPoster)
+  .post("/posters/delete", auth, postersController.deletePosterByID)
+  .get("/posters/:id", postersController.getPoster) // view poster even when not auth
   .get("/posters/designs/:id", postersController.getPosterByDesignerId)
   .post(
     "/posters/savechunkfromuser",

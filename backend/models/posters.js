@@ -28,6 +28,10 @@ const posterSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, //date
   },
+  publicid: {
+    type: String,
+    required: true,
+  },
 });
 
 // Model
