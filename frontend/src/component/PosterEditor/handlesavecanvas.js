@@ -1,7 +1,12 @@
 import pako from "pako";
 import axios from "axios";
 
-export async function handlesavecanvas(posterID, canvas, isdesigner) {
+export async function handlesavecanvas(
+  posterID,
+  canvas,
+  isdesigner,
+  setIsSaving
+) {
   function splitIntoChunks(data, chunkSize) {
     const chunks = [];
     for (let i = 0; i < data.length; i += chunkSize) {
@@ -122,8 +127,10 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
     }
   }
 
-  if (isdesigner)
+  if (isdesigner) {
+    setIsSaving(false);
     return { message: "Canvas saved successfully!", success: true };
+  }
 
   //canvas image save
 
@@ -184,6 +191,8 @@ export async function handlesavecanvas(posterID, canvas, isdesigner) {
       headers: { Authorization: localStorage.getItem("token") },
     }
   );
+
+  setIsSaving(false);
 
   console.log("Uploaded canvas png:", response.data);
   document.getElementById("my_modal_3").showModal();

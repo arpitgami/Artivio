@@ -46,3 +46,20 @@ exports.deleteposter = async (req, res) => {
     res.status(500).json({ error: "Failed to delete item." });
   }
 };
+
+exports.updateQuantity = async (req, res) => {
+  try {
+    await Cart.findByIdAndUpdate(req.body._id, req.body);
+    return res.json({
+      message: "Cart updated successfully",
+      success: true,
+    });
+  } catch (err) {
+    console.log("Not able to update cart info");
+    res.status(500).json({
+      message: "Not able to update cart info",
+      err: err.message,
+      success: false,
+    });
+  }
+};

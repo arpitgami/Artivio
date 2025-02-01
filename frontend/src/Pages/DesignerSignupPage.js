@@ -34,7 +34,7 @@ const DesignerSignup = () => {
         localStorage.setItem("loggedInUser", res.data.username);
         alert("Signup Successful, Redirecting to designers pannel...");
         setTimeout(() => {
-          navigate(`/home/design`);
+          navigate(`/home/yourdesign`);
         }, 2000);
       } else {
         alert(res.data.message);
@@ -46,10 +46,10 @@ const DesignerSignup = () => {
 
   return (
     <>
-      <NavigationPannel />
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black">
+      <NavigationPannel className="" />
+      <div className="flex flex-col items-center justify-center bg-white text-black">
         {/* Header Section */}
-        <div className="text-center mb-8">
+        <div className="text-center mt-24 my-8">
           <h1 className="text-3xl font-bold mb-4">Apply to join our team...</h1>
           <p className="text-lg">
             Are you a talented designer who wants to earn extra income through

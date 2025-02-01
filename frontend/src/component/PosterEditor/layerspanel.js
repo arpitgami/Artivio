@@ -149,7 +149,7 @@ export function Layers({ canvas }) {
               <FontAwesomeIcon
                 className={` size-4 ${
                   visibilityMap[obj.id] === false
-                    ? "text-primary-content"
+                    ? "text-gray-400"
                     : "text-primary"
                 }  `}
                 onClick={() => handlevisibility(obj.id)}

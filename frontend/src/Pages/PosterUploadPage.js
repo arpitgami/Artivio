@@ -61,7 +61,8 @@ const UploadPage = () => {
 
     const public_id = posterid
       ? initialState.publicid
-      : `${posterData.posterName}-${Date.now()}`;
+      : // : `${posterData.posterName}-${Date.now()}`;
+        `-${Date.now()}`;
 
     console.log("publicid : ", public_id);
 

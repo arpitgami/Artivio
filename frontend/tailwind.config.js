@@ -13,6 +13,8 @@ module.exports = {
         mytheme: {
           primary: "#07070A",
 
+          "primary-content": "#1D1D1D",
+
           secondary: "#00d0ff",
 
           accent: "#00a5fa",
@@ -32,7 +34,7 @@ module.exports = {
       },
     ],
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("tailwind-scrollbar-hide")],
 };
 // /** @type {import('tailwindcss').Config} */
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export function CartItem({ item }) {
+export function CartItem({ item, total, setTotal }) {
   const [quantity, setQuantity] = useState(item.quantity);
   const [posterdetails, setPosterdetails] = useState(null);
 
   useEffect(() => {
-    console.log("item:", item);
+    // console.log("item:", item);
 
     async function getPoster() {
       try {
@@ -16,7 +16,9 @@ export function CartItem({ item }) {
             headers: { Authorization: localStorage.getItem("token") },
           }
         );
-        console.log("poster resp:", posterRes.data[0]);
+        // console.log("poster resp:", posterRes.data[0]);
+
+        setTotal(total + item.quantity * posterRes.data[0].price);
 
         if (item.customized) {
           const imageEditRes = await axios.get(
@@ -25,7 +27,7 @@ export function CartItem({ item }) {
               headers: { Authorization: localStorage.getItem("token") },
             }
           );
-          console.log("image_edit_res:", imageEditRes.data[0].imageURL);
+          // console.log("image_edit_res:", imageEditRes.data[0].imageURL);
 
           const data = posterRes.data[0];
           data.imageURL = imageEditRes.data[0].imageURL;
@@ -40,13 +42,35 @@ export function CartItem({ item }) {
 
     getPoster();
   }, [item]);
-  useEffect(() => {
-    console.log("poster details:", posterdetails);
-  }, [posterdetails]);
+
+  // useEffect(() => {
+  //   // console.log("poster details:", posterdetails);
+  // }, [quantity]);
+
+  const updateQuantity = async (newQuantity) => {
+    try {
+      await axios.post(
+        `http://localhost:8080/cart/updateQuantity`,
+        {
+          _id: item._id,
+          userid: item.userid,
+          posterid: item.posterid,
+          quantity: newQuantity,
+        },
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      );
+      setTotal(total + (newQuantity - quantity) * posterdetails.price);
+      setQuantity(newQuantity);
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
+  };
+
   if (!posterdetails) {
-    return (
-      <div className="text-center text-lg p-4">Loading poster details...</div>
-    );
+    return;
+    // <div className="text-center text-lg p-4">Loading poster details...</div>
   }
 
   return (
@@ -73,14 +97,14 @@ export function CartItem({ item }) {
       <div>
         <button
           className="btn bg-base-200 btn-sm btn-circle btn-ghost"
-          onClick={() => setQuantity(quantity + 1)}
+          onClick={() => updateQuantity(quantity + 1)}
         >
           +
         </button>
         <span className="mx-2">{quantity}</span>
         <button
           className="btn bg-base-200 btn-sm btn-circle btn-ghost"
-          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+          onClick={() => updateQuantity(Math.max(1, quantity - 1))}
         >
           -
         </button>

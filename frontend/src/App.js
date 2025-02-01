@@ -12,6 +12,7 @@ import { YourDesignsPage } from "./Pages/YourDesignsPage";
 import UploadPage from "./Pages/PosterUploadPage";
 import MyEdits from "./Pages/MyEdits";
 import CartItem from "./Pages/Cart.js";
+import AllPoster from "./Pages/AllPoster.js";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/home/yourdesign/upload/:id" element={<PosterEditor />} />
         <Route path="/home/myedits" element={<MyEdits />} />
         <Route path="/cart" element={<CartItem />} />
+        <Route path="/posters" element={<AllPoster />} />
         <Route
           path="/editor/:id"
           element={

@@ -29,6 +29,7 @@ export function PosterEditor() {
   const [canvas, setCanvas] = useState(null);
   const [isdesigner, setIsDesigner] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [userid, setUserId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +40,7 @@ export function PosterEditor() {
   const isedit = queryParams.get("edit");
 
   // console.log()
-  console.log("Query param value:", isloaduseredit, isedit);
+  // console.log("Query param value:", isloaduseredit, isedit);
 
   useEffect(() => {
     axios
@@ -96,6 +97,7 @@ export function PosterEditor() {
       });
 
       canvas.add(rect);
+      canvas.setActiveObject(rect);
     }
   }
   function addCircle() {
@@ -111,13 +113,43 @@ export function PosterEditor() {
       canvas.add(rect);
     }
   }
+  async function handleaddtocart() {
+    try {
+      const user = await axios.get("http://localhost:8080/user", {
+        headers: { Authorization: localStorage.getItem("token") },
+      });
 
+      const res = await axios.post(
+        "http://localhost:8080/cart",
+        {
+          posterid: id,
+          userid: user.data._id,
+          customized: true,
+          quantity: 1,
+        },
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      );
+      alert(res.data.message);
+      navigate("/cart");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <>
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-white z-50">
           <div className=" text-black">Loading...</div>
         </div>
+      )}
+      {isSaving && (
+        <>
+          <div className="absolute inset-0 flex items-center justify-center opacity-30 bg-base-100 z-50">
+            <span class="loading loading-spinner loading-lg"></span>{" "}
+          </div>
+        </>
       )}
       <div className="bg-primary flex flex-col justify-center relative items-center m-0 w-screen h-screen overflow-hidden ">
         <div
@@ -153,9 +185,15 @@ export function PosterEditor() {
               <div
                 className="btn btn-sm text-primary mx-4"
                 onClick={() => {
-                  handlesavecanvas(posterID, canvas, isdesigner).then((res) => {
+                  setIsSaving(true);
+                  handlesavecanvas(
+                    posterID,
+                    canvas,
+                    isdesigner,
+                    setIsSaving
+                  ).then((res) => {
                     if (res.success) {
-                      alert("Poster uploaded succesfully!!");
+                      // alert("Poster uploaded succesfully!!");
                       if (isdesigner) {
                         navigate("/home/yourdesign");
                       }
@@ -190,7 +228,9 @@ export function PosterEditor() {
                   {" "}
                   My Edits
                 </button>
-                <button className="btn ml-4">Add to cart</button>
+                <button className="btn ml-4" onClick={handleaddtocart}>
+                  Add to cart
+                </button>
               </div>
               <p
                 className="py-2 text-sm"

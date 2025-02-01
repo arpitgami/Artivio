@@ -16,10 +16,12 @@ export function NavigationPannel() {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => {
+        // console.log("userdata : ", res);
+        if (res.data.success) return;
         setUser(res.data);
         if (res.data.isdesigner) {
           setIsDesigner(true);
-          console.log("nav data ", res.data);
+          // console.log("nav data ", res.data);
         }
       });
   }, []);
@@ -38,10 +40,13 @@ export function NavigationPannel() {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link to="/home">Home</Link>
-          </li>
-          <li>{isdesigner && <Link to="/home/yourdesign">My Designs</Link>}</li>
+          <li>{!isdesigner && <Link to="/home">Home</Link>}</li>
+          <li>{!isdesigner && <Link to="/posters">Posters</Link>}</li>
+          {isdesigner && (
+            <li>
+              <Link to="/home/yourdesign">My Designs</Link>
+            </li>
+          )}
           <li>{!isdesigner && <Link to="/contact">Contact</Link>}</li>
         </ul>
       </div>
@@ -60,7 +65,9 @@ export function NavigationPannel() {
           {isAuthenticated ? (
             <li>
               <details>
-                <summary className="">{user && user.username}</summary>
+                <summary className="">
+                  {localStorage.getItem("loggedInUser")}
+                </summary>
                 <ul className="bg-black rounded-t-none p-2 ">
                   {!isdesigner && (
                     <li>

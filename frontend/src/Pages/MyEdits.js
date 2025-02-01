@@ -60,6 +60,9 @@ const MyEdits = () => {
           </div>
         )}
       </div>
+      <div className="flex w-3/12 mx-auto flex-col mb-4 ">
+        <div className="divider " />
+      </div>
     </>
   );
 };

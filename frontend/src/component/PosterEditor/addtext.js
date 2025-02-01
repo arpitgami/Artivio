@@ -33,6 +33,8 @@ export function Addtext({ canvas }) {
     if (object.type === "text") {
       // console.log(object.text);
       setTextContent(object.text);
+    } else {
+      setTextContent("");
     }
   }
 
@@ -42,11 +44,15 @@ export function Addtext({ canvas }) {
     if (selectedObject.type === "text") {
       return;
     }
+    // if (!textContent.trim()) {
+    //   console.warn("Text content is empty. Skipping text addition.");
+    //   return;
+    // }
 
     const text = new FabricText(textContent, {
       left: 50,
       top: 50,
-      fill: "#FFFF",
+      fill: "#D84D42",
       fontSize: 28,
     });
 

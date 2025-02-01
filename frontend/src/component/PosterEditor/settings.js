@@ -47,6 +47,7 @@ export function Settings({ canvas }) {
     } else if (object.type === "text") {
       // console.log(object);
       setFontSize(object.fontSize);
+      console.log("text color : ", object.fill);
       setColor(object.fill);
     }
   }

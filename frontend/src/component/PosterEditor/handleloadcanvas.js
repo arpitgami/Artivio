@@ -19,7 +19,7 @@ export async function handleloadcanvas(
     return;
   }
   try {
-    console.log(isdesigner);
+    // console.log(isdesigner);
     console.log("Loading canvas data for poster:", posterID);
     const downloadedChunks = [];
     const chunksURL = isloaduseredit
@@ -48,23 +48,33 @@ export async function handleloadcanvas(
       offset += chunk.length;
     }
     const decompressedData = pako.ungzip(combinedData, { to: "string" });
+    // console.log("decompressed data : ", decompressedData);
     const parsedData = JSON.parse(decompressedData);
+    console.log("parsed data : ", parsedData);
     canvas
       .loadFromJSON(parsedData, function (o, object) {
         // console.log(o.id);
-        if (o.id) {
-          object.id = o.id; // Restore custom 'id'
-        }
-        if (o.zIndex !== undefined) {
-          object.zIndex = o.zIndex; // Restore custom 'zIndex'
+        if (o) {
+          if (o.id) {
+            object.id = o.id; // Restore custom 'id'
+          }
+          if (o.zIndex !== undefined) {
+            object.zIndex = o.zIndex; // Restore custom 'zIndex'
+          }
+        } else {
+          console.log("Object undefined");
         }
       })
       .then((canvas) => {
         canvas.requestRenderAll();
         setIsLoading(false);
+        console.log("check");
+      })
+      .catch((err) => {
+        console.log("error in loadfromJSON : ", err);
       });
   } catch (error) {
     console.error("Error downloading or reconstructing canvas data:", error);
-    throw error;
+    alert(error);
   }
 }
