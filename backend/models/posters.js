@@ -37,4 +37,4 @@ const posterSchema = new mongoose.Schema({
 // Model
 const Poster = mongoose.model("Poster", posterSchema);
 
-exports.Poster = Poster;
+module.exports = Poster;

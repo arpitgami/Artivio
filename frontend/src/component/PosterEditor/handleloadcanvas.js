@@ -51,6 +51,11 @@ export async function handleloadcanvas(
     // console.log("decompressed data : ", decompressedData);
     const parsedData = JSON.parse(decompressedData);
     console.log("parsed data : ", parsedData);
+    parsedData.objects.forEach((obj) => {
+      if ((obj.type === "text" || obj.type === "textbox") && !obj.text) {
+        obj.text = "ac"; // Default value to prevent errors
+      }
+    });
     canvas
       .loadFromJSON(parsedData, function (o, object) {
         // console.log(o.id);

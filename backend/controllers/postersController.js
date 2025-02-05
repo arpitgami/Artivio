@@ -1,5 +1,4 @@
-const model = require("../models/posters");
-const Poster = model.Poster;
+const Poster = require("../models/posters");
 const PosterCanvas = require("../models/postercanvas");
 const UserEditsImage = require("../models/usereditsimage");
 const UserEdits = require("../models/userEdits");

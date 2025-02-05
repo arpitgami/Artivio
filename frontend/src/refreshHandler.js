@@ -13,7 +13,11 @@ function RefreshHandler({ setIsAuthenticated }) {
       })
       .then((res) => {
         // console.log("userdata : ", res.data.success);
-        res.data.success ? setIsAuthenticated(true) : setIsAuthenticated(false);
+        if (res.data.success) setIsAuthenticated(true);
+        else {
+          localStorage.removeItem("token");
+          setIsAuthenticated(false);
+        }
       });
   }, [location, navigate, setIsAuthenticated]);
 

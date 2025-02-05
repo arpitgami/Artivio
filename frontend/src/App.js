@@ -13,6 +13,8 @@ import UploadPage from "./Pages/PosterUploadPage";
 import MyEdits from "./Pages/MyEdits";
 import CartItem from "./Pages/Cart.js";
 import AllPoster from "./Pages/AllPoster.js";
+import Success from "./Pages/Success.js";
+import Failed from "./Pages/Failed.js";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
@@ -45,6 +47,8 @@ const App = () => {
         <Route path="/home/myedits" element={<MyEdits />} />
         <Route path="/cart" element={<CartItem />} />
         <Route path="/posters" element={<AllPoster />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/failed" element={<Failed />} />
         <Route
           path="/editor/:id"
           element={

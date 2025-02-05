@@ -17,8 +17,8 @@ exports.signUp = async (req, res) => {
       process.env.SECRETKEY,
       { expiresIn: "24h" }
     );
-    const user = new User(req.body);
-    user.token = token;
+    const user = await new User(req.body);
+    // user.token = token;
     const password = req.body.password;
 
     await bcrypt
@@ -32,7 +32,7 @@ exports.signUp = async (req, res) => {
 
     await user.save().then((savedUser) => {
       res.status(200).json({
-        token: savedUser.token,
+        token: token,
         username: savedUser.username,
         id: savedUser._id,
         message: "Signup successfully",
@@ -74,13 +74,13 @@ exports.login = async (req, res) => {
         process.env.SECRETKEY,
         { expiresIn: "24h" }
       );
-      user.token = token;
+      // user.token = token;
       await user.save().then((savedUser) => {
         res.status(200).json({
-          token: savedUser.token,
+          token: token,
           isdesigner: savedUser.isdesigner,
           username: savedUser.username,
-          id: savedUser._id,
+          // id: savedUser._id,
           message: "Login successfully",
           success: true,
         });

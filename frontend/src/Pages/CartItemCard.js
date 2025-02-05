@@ -18,8 +18,6 @@ export function CartItem({ item, total, setTotal }) {
         );
         // console.log("poster resp:", posterRes.data[0]);
 
-        setTotal(total + item.quantity * posterRes.data[0].price);
-
         if (item.customized) {
           const imageEditRes = await axios.get(
             `http://localhost:8080/posters/uploadimage?userid=${item.userid}&posterid=${item.posterid}`,
@@ -61,8 +59,11 @@ export function CartItem({ item, total, setTotal }) {
           headers: { Authorization: localStorage.getItem("token") },
         }
       );
-      setTotal(total + (newQuantity - quantity) * posterdetails.price);
       setQuantity(newQuantity);
+      setTotal(
+        (prevTotal) =>
+          prevTotal + (newQuantity - quantity) * posterdetails.price
+      );
     } catch (error) {
       console.error("Error updating quantity:", error);
     }
@@ -74,8 +75,8 @@ export function CartItem({ item, total, setTotal }) {
   }
 
   return (
-    <div className="bg-base-100 flex justify-between items-center p-8 w-5/6 mx-auto rounded-3xl m-4">
-      <div className="flex flex-row mx-8">
+    <div className="bg-base-100 flex justify-between items-center p-8 w-full mx-auto rounded-3xl m-4">
+      <div className="relative flex flex-row right-0">
         <div>
           <img
             src={posterdetails.imageURL}
@@ -94,7 +95,7 @@ export function CartItem({ item, total, setTotal }) {
         </div>
       </div>
 
-      <div>
+      <div className="">
         <button
           className="btn bg-base-200 btn-sm btn-circle btn-ghost"
           onClick={() => updateQuantity(quantity + 1)}

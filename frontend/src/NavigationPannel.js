@@ -36,7 +36,11 @@ export function NavigationPannel() {
   return (
     <div className="navbar bg-primary text-base-100  ">
       <div className="navbar-start">
-        <div className="ml-5  text-xl">Artivio</div>
+        {/* <div className="ml-5  text-xl">Artivio</div> */}
+        <img
+          src="https://res.cloudinary.com/drhmsjhpq/image/upload/v1738520194/Asset_4_c450zr.png"
+          className="h-8 ml-6"
+        />
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -68,7 +72,7 @@ export function NavigationPannel() {
                 <summary className="">
                   {localStorage.getItem("loggedInUser")}
                 </summary>
-                <ul className="bg-black rounded-t-none p-2 ">
+                <ul className="bg-black rounded-t-none p-2 z-10 ">
                   {!isdesigner && (
                     <li>
                       <Link to="/home/myedits">

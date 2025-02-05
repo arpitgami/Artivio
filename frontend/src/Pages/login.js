@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Googlelogin from "../googlelogin";
 
 export const Login = () => {
   const [info, setInfo] = useState({
@@ -45,7 +46,14 @@ export const Login = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen ">
+      <div
+        className="btn btn-sm bg-base-100 text-gray-700 hover:bg-base-300 hover:text-primary btn-square px-5 text-base-100 absolute top-10 left-10 "
+        onClick={() => navigate("/home")}
+      >
+        {" "}
+        {`<`}
+      </div>
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleSubmit}>
@@ -81,9 +89,18 @@ export const Login = () => {
           >
             Login
           </button>
-          <div className="text-black py-2">
-            <span>Already have and account! </span>
+          <div className="text-black text-center mt-4">
+            <span>Don't have and account! </span>
             <Link to="/signup">Signup</Link>
+          </div>
+          {/* <div className="text-black text-center mt-4">
+            <span>Already have an account? </span>
+            <Link to="/login" className="text-primary">
+              Login
+            </Link>
+          </div> */}
+          <div className="mt-6 flex justify-center">
+            <Googlelogin />
           </div>
         </form>
       </div>

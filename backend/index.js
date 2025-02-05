@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { auth } = require("./middleware/auth");
 const { signaturecontroller } = require("./controllers/signaturecontroller");
+const { checkoutcontroller } = require("./controllers/checkoutcontroller");
 
 //database connection
 main().catch((err) => console.log(err));
@@ -32,5 +33,6 @@ server.get("/checktoken", auth, (req, res) =>
   res.json({ message: "Token is valid", success: true, email: req.email })
 );
 server.post("/generate-signature", auth, signaturecontroller);
+server.post("/checkout", auth, checkoutcontroller);
 
 server.listen(8080);

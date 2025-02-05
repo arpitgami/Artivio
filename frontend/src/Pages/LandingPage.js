@@ -4,6 +4,7 @@ import { PosterCard } from "../PosterCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Footer } from "../component/footer";
 
 export function LandingPage() {
   const [posters, setPosters] = useState([]);
@@ -51,7 +52,7 @@ export function LandingPage() {
           this week...
         </div>
         {posters.length > 0 && (
-          <div className="flex flex-wrap gap-20 justify-center items-center w-5/6">
+          <div className="flex flex-wrap gap-20 justify-center items-center w-5/6 ">
             {posters.slice(0, 3).map((poster) => (
               <button
                 key={poster._id}
@@ -65,6 +66,7 @@ export function LandingPage() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

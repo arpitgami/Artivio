@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { PosterCard } from "../PosterCard";
 import { useNavigate } from "react-router-dom";
 import { NavigationPannel } from "../NavigationPannel";
+import { Footer } from "../component/footer";
 
 function AllPoster() {
   const [posters, setPosters] = useState([]);
@@ -41,6 +42,7 @@ function AllPoster() {
           </div>
         )}
       </div>
+      <Footer />
     </>
   );
 }
