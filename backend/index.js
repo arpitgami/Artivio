@@ -24,6 +24,9 @@ async function main() {
 
 server.use(cors());
 server.use(express.json({ limit: "50mb" })); //body parser
+server.get("/", (req, res) => {
+    res.json("Hello");
+})
 
 server.use("/auth", authRoutes);
 server.use("/", posterRoutes);
