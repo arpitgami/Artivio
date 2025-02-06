@@ -10,6 +10,7 @@ import { handleloadcanvas } from "../component/PosterEditor/handleloadcanvas";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import { Addtext } from "../component/PosterEditor/addtext";
 
 FabricObject.prototype.toObject = (function (toObject) {
@@ -93,7 +94,7 @@ export function PosterEditor() {
         left: 100,
         width: 100,
         height: 100,
-        fill: "#D84D42",
+        fill: "#131313",
       });
 
       canvas.add(rect);
@@ -102,15 +103,12 @@ export function PosterEditor() {
   }
   function addCircle() {
     if (canvas) {
-      const rect = new Circle({
-        top: 100,
-        left: 100,
-        width: 100,
-        height: 100,
-        fill: "#D84D42",
+      const circle = new Circle({
+        radius: 100,
+        fill: "#131313",
       });
 
-      canvas.add(rect);
+      canvas.add(circle);
     }
   }
   async function handleaddtocart() {
@@ -167,13 +165,21 @@ export function PosterEditor() {
           </div>
         )}
         <div className="flex flex-row items-center justify-center h-[600px] ">
-          <div className="flex flex-col items-center justify-center h-screen">
-            <button
-              className="btn btn-sm text-base-100"
-              onClick={() => addRectangle()}
-            >
-              <FontAwesomeIcon icon={faSquare} style={{ color: "#000000" }} />
-            </button>
+          <div className="flex flex-col items-center justify-center h-screen m-2">
+            <div className="flex flex-row items-center justify-center m-2 gap-2">
+              <FontAwesomeIcon
+                className="btn btn-sm text-base-100 size-3"
+                onClick={addRectangle}
+                icon={faSquare}
+                style={{ color: "#000000" }}
+              />
+              <FontAwesomeIcon
+                className="btn btn-sm text-base-100 size-3"
+                onClick={addCircle}
+                style={{ color: "#000000" }}
+                icon={faCircle}
+              />
+            </div>
             <Addtext canvas={canvas} />
           </div>
           <div className="">

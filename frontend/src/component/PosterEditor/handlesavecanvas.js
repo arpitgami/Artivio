@@ -15,7 +15,29 @@ export async function handlesavecanvas(
     return chunks; // array of chunks (Uint8Array)
   }
 
-  const jsonData = JSON.stringify(canvas.toJSON());
+  // Store text properties manually before calling `toJSON()`
+  const textMap = new Map();
+  canvas.getObjects().forEach((obj, index) => {
+    if (obj.type === "textbox" || obj.type === "text") {
+      textMap.set(index, obj.text);
+    }
+  });
+
+  // Serialize the canvas
+  const tojsondata = await canvas.toJSON();
+
+  // console.log("toJSON data BEFORE adding text:", tojsondata);
+
+  // Restore text properties from `textMap`
+  tojsondata.objects.forEach((obj, index) => {
+    if (textMap.has(index)) {
+      obj.text = textMap.get(index);
+    }
+  });
+
+  // console.log("toJSON data AFTER adding text:", tojsondata);
+
+  const jsonData = JSON.stringify(tojsondata);
 
   const compressedData = pako.gzip(jsonData); // Outputs Uint8Array
   const chunkSize = 8 * 1024 * 1024; // 8 MB chunks

@@ -50,12 +50,22 @@ export async function handleloadcanvas(
     const decompressedData = pako.ungzip(combinedData, { to: "string" });
     // console.log("decompressed data : ", decompressedData);
     const parsedData = JSON.parse(decompressedData);
-    console.log("parsed data : ", parsedData);
+
+    // parsedData.objects.forEach((obj, index) => {
+    //   console.log(`Checking object ${index}:`, obj);
+    //   if (obj.type === "Text" || obj.type === "textbox") {
+    //     console.log("check");
+    //     console.log(`Text: ${obj.text}`);
+    //     // obj.text = " ";
+    //   }
+    // });
+
     parsedData.objects.forEach((obj) => {
-      if ((obj.type === "text" || obj.type === "textbox") && !obj.text) {
-        obj.text = "ac"; // Default value to prevent errors
+      if (obj.type === "Text" && !obj.text) {
+        obj.text = "ab"; // Default value to prevent errors
       }
     });
+
     canvas
       .loadFromJSON(parsedData, function (o, object) {
         // console.log(o.id);

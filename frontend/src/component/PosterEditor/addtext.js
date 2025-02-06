@@ -52,7 +52,7 @@ export function Addtext({ canvas }) {
     const text = new FabricText(textContent, {
       left: 50,
       top: 50,
-      fill: "#D84D42",
+      fill: "#131313",
       fontSize: 28,
     });
 

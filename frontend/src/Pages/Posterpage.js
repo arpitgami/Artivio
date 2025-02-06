@@ -98,16 +98,15 @@ export function PosterPage() {
             </div>
 
             <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              <h2 className="text-5xl font-black   text-primary mb-4">
                 {poster.posterName}
               </h2>
 
-              <p className="text-gray-600 text-sm mb-2">
-                Designed by:{" "}
-                <span className="font-semibold">{poster.designersName}</span>
+              <p className="text-primary font-semibold text-sm ">
+                Designed by: {poster.designersName}
               </p>
 
-              <p className="text-xl font-bold text-gray-800 mb-6">
+              <p className="text-xl font-black text-gray-800 mb-6">
                 <span>Rs. </span>
                 {poster.price}
               </p>
@@ -115,13 +114,13 @@ export function PosterPage() {
               <div className="flex flex-col ">
                 <button
                   onClick={handleCustomize}
-                  className="bg-gray-800 text-white py-2 px-4 m-1.5 rounded-md hover:bg-gray-700 transition"
+                  className="bg-primary text-white py-2 px-4 m-1.5 rounded-md hover:bg-primary-content transition"
                 >
                   Customize
                 </button>
                 <button
                   onClick={handleaddtocart}
-                  className="bg-gray-900 text-white py-2 px-4 m-1.5 rounded-md hover:bg-gray-700 transition"
+                  className="bg-primary text-white py-2 px-4 m-1.5 rounded-md hover:bg-primary-content transition"
                 >
                   Add to Cart
                 </button>
