@@ -17,7 +17,7 @@ export function YourDesignsPage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user", {
+      .get(`${process.env.REACT_APP_API_BASE_URL}/user`, {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => {
@@ -27,7 +27,7 @@ export function YourDesignsPage() {
 
   useEffect(() => {
     if (!designerId) return;
-    axios(`http://localhost:8080/posters/designs/${designerId}`)
+    axios(`${process.env.REACT_APP_API_BASE_URL}/posters/designs/${designerId}`)
       .then((res) => {
         setPosterData(res.data);
         // console.log(res.data);
@@ -39,7 +39,7 @@ export function YourDesignsPage() {
     // console.log("posterid : ", id);
     try {
       const res = await axios.post(
-        "http://localhost:8080/posters/delete",
+        `${process.env.REACT_APP_API_BASE_URL}/posters/delete`,
         { posterid: id, designerid: designerId },
         {
           headers: { Authorization: localStorage.getItem("token") },

@@ -23,8 +23,8 @@ export async function handleloadcanvas(
     console.log("Loading canvas data for poster:", posterID);
     const downloadedChunks = [];
     const chunksURL = isloaduseredit
-      ? `http://localhost:8080/posters/getchunksbyuser?posterid=${posterID}&userid=${userid}`
-      : `http://localhost:8080/posters/getchunksbydesigner?posterid=${posterID}`;
+      ? `${process.env.REACT_APP_API_BASE_URL}/posters/getchunksbyuser?posterid=${posterID}&userid=${userid}`
+      : `${process.env.REACT_APP_API_BASE_URL}/posters/getchunksbydesigner?posterid=${posterID}`;
     const sortedChunks = await axios.get(chunksURL, {
       headers: {
         authorization: localStorage.getItem("token"),

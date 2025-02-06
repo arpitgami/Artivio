@@ -7,7 +7,7 @@ export function PosterCard({ poster }) {
   const [isDesigner, setIsDesigner] = useState(false);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user", {
+      .get(`${process.env.REACT_APP_API_BASE_URL}/user`, {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => {

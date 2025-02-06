@@ -45,7 +45,7 @@ export function PosterEditor() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user", {
+      .get(`${process.env.REACT_APP_API_BASE_URL}/user`, {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => {
@@ -113,12 +113,15 @@ export function PosterEditor() {
   }
   async function handleaddtocart() {
     try {
-      const user = await axios.get("http://localhost:8080/user", {
-        headers: { Authorization: localStorage.getItem("token") },
-      });
+      const user = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/user`,
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      );
 
       const res = await axios.post(
-        "http://localhost:8080/cart",
+        `${process.env.REACT_APP_API_BASE_URL}/cart`,
         {
           posterid: id,
           userid: user.data._id,

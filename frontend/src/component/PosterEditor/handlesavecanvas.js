@@ -46,14 +46,13 @@ export async function handlesavecanvas(
   const chunkSize = 8 * 1024 * 1024; // 8 MB chunks
   const chunks = splitIntoChunks(compressedData, chunkSize);
 
-  const user = await axios.get(`http://localhost:8080/user`, {
+  const user = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user`, {
     headers: { Authorization: localStorage.getItem("token") },
   });
   console.log("User:", user.data);
   const previousChunksURL = isdesigner
-    ? "http://localhost:8080/posters/getchunksbydesigner"
-    : "http://localhost:8080/posters/getchunksbyuser";
-
+    ? `${process.env.REACT_APP_API_BASE_URL}/posters/getchunksbydesigner`
+    : `${process.env.REACT_APP_API_BASE_URL}/posters/getchunksbyuser`;
   const previouschunks = await axios.get(
     previousChunksURL + `?userid=${user.data._id}&posterid=${posterID}`,
     {
@@ -66,8 +65,8 @@ export async function handlesavecanvas(
   if (previousChunks.length > 0) {
     try {
       const deletechunkURL = isdesigner
-        ? "http://localhost:8080/posters/deletechunksofdesigner"
-        : "http://localhost:8080/posters/deletechunksofuser";
+        ? `${process.env.REACT_APP_API_BASE_URL}/posters/deletechunksofdesigner`
+        : `${process.env.REACT_APP_API_BASE_URL}/posters/deletechunksofuser`;
       const deleteResponse = await axios.post(
         deletechunkURL,
         {
@@ -90,7 +89,7 @@ export async function handlesavecanvas(
         // Step 1: Get signed parameters from the backend
 
         const signatureResponse = await axios.post(
-          "http://localhost:8080/generate-signature",
+          `${process.env.REACT_APP_API_BASE_URL}/generate-signature`,
           {
             public_id: publicId,
             upload_preset: isdesigner
@@ -141,9 +140,8 @@ export async function handlesavecanvas(
           : (data.userid = user.data._id);
 
         const URL = isdesigner
-          ? "http://localhost:8080/posters/savechunkfromdesigner"
-          : "http://localhost:8080/posters/savechunkfromuser";
-
+          ? `${process.env.REACT_APP_API_BASE_URL}/posters/savechunkfromdesigner`
+          : `${process.env.REACT_APP_API_BASE_URL}/posters/savechunkfromuser`;
         const backendResponse = await axios.post(URL, data, {
           headers: { Authorization: localStorage.getItem("token") },
         });
@@ -179,7 +177,7 @@ export async function handlesavecanvas(
   const publicId = `${user.data._id}_${posterID}_canvaspng`;
 
   const signatureResponse = await axios.post(
-    "http://localhost:8080/generate-signature",
+    `${process.env.REACT_APP_API_BASE_URL}/generate-signature`,
     {
       public_id: publicId,
       upload_preset: "Artivio_useredits_preset",
@@ -215,7 +213,7 @@ export async function handlesavecanvas(
   };
 
   const response = await axios.post(
-    "http://localhost:8080/posters/uploadimage",
+    `${process.env.REACT_APP_API_BASE_URL}/posters/uploadimage`,
     data,
     {
       headers: { Authorization: localStorage.getItem("token") },

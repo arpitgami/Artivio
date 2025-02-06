@@ -14,14 +14,17 @@ const MyEdits = () => {
         setLoading(true);
         setError("");
 
-        const userRes = await axios.get("http://localhost:8080/user", {
-          headers: { Authorization: localStorage.getItem("token") },
-        });
+        const userRes = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/user`,
+          {
+            headers: { Authorization: localStorage.getItem("token") },
+          }
+        );
         const userid = userRes.data._id;
         console.log("User data:", userRes.data);
 
         const editsRes = await axios.get(
-          `http://localhost:8080/posters/uploadimage?userid=${userid}`,
+          `${process.env.REACT_APP_API_BASE_URL}/posters/uploadimage?userid=${userid}`,
           {
             headers: { Authorization: localStorage.getItem("token") },
           }

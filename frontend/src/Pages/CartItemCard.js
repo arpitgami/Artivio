@@ -11,7 +11,7 @@ export function CartItem({ item, total, setTotal }) {
     async function getPoster() {
       try {
         const posterRes = await axios.get(
-          `http://localhost:8080/posters/${item.posterid}`,
+          `${process.env.REACT_APP_API_BASE_URL}/posters/${item.posterid}`,
           {
             headers: { Authorization: localStorage.getItem("token") },
           }
@@ -20,7 +20,7 @@ export function CartItem({ item, total, setTotal }) {
 
         if (item.customized) {
           const imageEditRes = await axios.get(
-            `http://localhost:8080/posters/uploadimage?userid=${item.userid}&posterid=${item.posterid}`,
+            `${process.env.REACT_APP_API_BASE_URL}/posters/uploadimage?userid=${item.userid}&posterid=${item.posterid}`,
             {
               headers: { Authorization: localStorage.getItem("token") },
             }
@@ -48,7 +48,7 @@ export function CartItem({ item, total, setTotal }) {
   const updateQuantity = async (newQuantity) => {
     try {
       await axios.post(
-        `http://localhost:8080/cart/updateQuantity`,
+        `${process.env.REACT_APP_API_BASE_URL}/cart/updateQuantity`,
         {
           _id: item._id,
           userid: item.userid,

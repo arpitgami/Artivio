@@ -13,9 +13,12 @@ export function PosterPage() {
   useEffect(() => {
     const fetchPoster = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/posters/${id}`, {
-          headers: { Authorization: localStorage.getItem("token") },
-        });
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/posters/${id}`,
+          {
+            headers: { Authorization: localStorage.getItem("token") },
+          }
+        );
         setPoster(res.data[0]);
         setLoading(false);
         console.log(res.data);
@@ -46,9 +49,12 @@ export function PosterPage() {
   }
 
   async function handleCustomize() {
-    const res = await axios.get("http://localhost:8080/checktoken", {
-      headers: { Authorization: localStorage.getItem("token") },
-    });
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/checktoken`,
+      {
+        headers: { Authorization: localStorage.getItem("token") },
+      }
+    );
     if (!res.data.success) {
       alert("Please login to customize the poster.");
       navigate("/login");
@@ -58,12 +64,15 @@ export function PosterPage() {
   }
   async function handleaddtocart() {
     try {
-      const user = await axios.get("http://localhost:8080/user", {
-        headers: { Authorization: localStorage.getItem("token") },
-      });
+      const user = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/user`,
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      );
 
       const res = await axios.post(
-        "http://localhost:8080/cart",
+        `${process.env.REACT_APP_API_BASE_URL}/cart`,
         {
           posterid: id,
           userid: user.data._id,

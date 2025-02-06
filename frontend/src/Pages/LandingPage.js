@@ -12,7 +12,7 @@ export function LandingPage() {
 
   useEffect(() => {
     // console.log("Getting posters");
-    axios("http://localhost:8080/posters")
+    axios(`${process.env.REACT_APP_API_BASE_URL}/posters`)
       .then((res) => {
         setPosters(res.data);
         // console.log(res.data);

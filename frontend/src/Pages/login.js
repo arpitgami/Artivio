@@ -26,7 +26,7 @@ export const Login = () => {
     try {
       const res = await axios({
         method: "post",
-        url: "http://localhost:8080/auth/login",
+        url: `${process.env.REACT_APP_API_BASE_URL}/auth/login`,
         headers: {
           "Content-Type": "application/json",
         },

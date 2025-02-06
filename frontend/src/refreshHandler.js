@@ -8,7 +8,7 @@ function RefreshHandler({ setIsAuthenticated }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/checktoken", {
+      .get(`${process.env.REACT_APP_API_BASE_URL}/checktoken`, {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => {

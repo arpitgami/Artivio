@@ -9,7 +9,7 @@ const MyEditsCard = ({ edit }) => {
   useEffect(() => {
     console.log("data:", edit);
     axios
-      .get(`http://localhost:8080/posters/${edit.posterid}`)
+      .get(`${process.env.REACT_APP_API_BASE_URL}/posters/${edit.posterid}`)
       .then((res) => {
         console.log("Poster data:", res.data[0]);
         setPosterData(res.data[0]);
@@ -21,12 +21,15 @@ const MyEditsCard = ({ edit }) => {
 
   async function handleaddtocart() {
     try {
-      const user = await axios.get("http://localhost:8080/user", {
-        headers: { Authorization: localStorage.getItem("token") },
-      });
+      const user = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/user`,
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      );
 
       const res = await axios.post(
-        "http://localhost:8080/cart",
+        `${process.env.REACT_APP_API_BASE_URL}/cart`,
         {
           posterid: posterdata._id,
           userid: user.data._id,

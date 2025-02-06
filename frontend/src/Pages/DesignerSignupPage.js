@@ -23,7 +23,7 @@ const DesignerSignup = () => {
     try {
       const res = await axios({
         method: "post",
-        url: "http://localhost:8080/auth/signup",
+        url: `${process.env.REACT_APP_API_BASE_URL}/auth/signup`,
         headers: {
           "Content-Type": "application/json",
         },

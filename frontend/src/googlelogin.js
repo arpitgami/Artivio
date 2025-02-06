@@ -8,9 +8,12 @@ function Googlelogin() {
   async function handlegooglelogin(credentialResponse) {
     try {
       console.log(credentialResponse);
-      const res = await axios.post("http://localhost:8080/auth/google", {
-        credential: credentialResponse.credential,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/auth/google`,
+        {
+          credential: credentialResponse.credential,
+        }
+      );
       console.log("google res: ", res.data);
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);

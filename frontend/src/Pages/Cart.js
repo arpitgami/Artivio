@@ -14,13 +14,16 @@ function Cart() {
 
     async function getdata() {
       try {
-        const userres = await axios.get(`http://localhost:8080/user`, {
-          headers: { Authorization: localStorage.getItem("token") },
-        });
+        const userres = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/user`,
+          {
+            headers: { Authorization: localStorage.getItem("token") },
+          }
+        );
         // console.log(userres.data);
 
         const cartres = await axios.get(
-          `http://localhost:8080/cart/${userres.data._id}`,
+          `${process.env.REACT_APP_API_BASE_URL}/cart/${userres.data._id}`,
           {
             headers: {
               Authorization: localStorage.getItem("token"),
@@ -34,7 +37,7 @@ function Cart() {
         let totalAmount = 0;
         for (const item of cartres.data) {
           const posterRes = await axios.get(
-            `http://localhost:8080/posters/${item.posterid}`,
+            `${process.env.REACT_APP_API_BASE_URL}/posters/${item.posterid}`,
             {
               headers: { Authorization: localStorage.getItem("token") },
             }
@@ -57,7 +60,7 @@ function Cart() {
       const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
       const response = await axios.post(
-        `http://localhost:8080/checkout`,
+        `${process.env.REACT_APP_API_BASE_URL}/checkout`,
         cartItems,
         {
           headers: { Authorization: localStorage.getItem("token") },

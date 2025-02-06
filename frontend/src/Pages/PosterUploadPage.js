@@ -19,7 +19,7 @@ const UploadPage = () => {
   useEffect(() => {
     if (!posterid) return;
     axios
-      .get(`http://localhost:8080/posters/${posterid}`, {
+      .get(`${process.env.REACT_APP_API_BASE_URL}/posters/${posterid}`, {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((res) => {
@@ -68,7 +68,7 @@ const UploadPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/generate-signature",
+        `${process.env.REACT_APP_API_BASE_URL}/generate-signature`,
         {
           public_id: public_id,
           upload_preset: "Artivio_designeredit_preset",
@@ -102,9 +102,12 @@ const UploadPage = () => {
       const data = cloudinaryResponse.data;
 
       if (data.secure_url) {
-        const designer = await axios.get("http://localhost:8080/user", {
-          headers: { Authorization: localStorage.getItem("token") },
-        });
+        const designer = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/user`,
+          {
+            headers: { Authorization: localStorage.getItem("token") },
+          }
+        );
         console.log("designer", designer.data);
         console.log("posterata", posterData);
 
@@ -120,7 +123,7 @@ const UploadPage = () => {
 
         console.log("token", localStorage.getItem("token"));
         const res = await axios.post(
-          "http://localhost:8080/posters",
+          `${process.env.REACT_APP_API_BASE_URL}/posters`,
           posterentries,
           {
             headers: { Authorization: localStorage.getItem("token") },
