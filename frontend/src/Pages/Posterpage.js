@@ -86,7 +86,7 @@ export function PosterPage() {
       <div className="flex flex-col">
         <NavigationPannel />
         <div className="bg-gray-100  flex items-center justify-center h-screen">
-          <div className="bg-white rounded-lg shadow-lg flex flex-col md:flex-row w-4/5 md:w-2/3 lg:w-1/2 overflow-hidden">
+          <div className="bg-white rounded-lg shadow-xl flex flex-col md:flex-row w-4/5 md:w-2/3 lg:w-1/2 overflow-hidden">
             <div className="bg-gray-200 w-full md:w-1/2 flex items-center justify-center">
               <div className="relative w-full h-0 pb-[125%] bg-gray-300 rounded-lg overflow-hidden">
                 <img

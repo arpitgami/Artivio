@@ -15,6 +15,9 @@ export async function handlesavecanvas(
     return chunks; // array of chunks (Uint8Array)
   }
 
+  canvas.getObjects().forEach((obj) => {
+    console.log(obj);
+  });
   // Store text properties manually before calling `toJSON()`
   const textMap = new Map();
   canvas.getObjects().forEach((obj, index) => {
@@ -26,7 +29,7 @@ export async function handlesavecanvas(
   // Serialize the canvas
   const tojsondata = await canvas.toJSON();
 
-  // console.log("toJSON data BEFORE adding text:", tojsondata);
+  console.log("toJSON data BEFORE adding text:", tojsondata);
 
   // Restore text properties from `textMap`
   tojsondata.objects.forEach((obj, index) => {
@@ -35,7 +38,7 @@ export async function handlesavecanvas(
     }
   });
 
-  // console.log("toJSON data AFTER adding text:", tojsondata);
+  console.log("toJSON data AFTER adding text:", tojsondata);
 
   const jsonData = JSON.stringify(tojsondata);
 
@@ -78,76 +81,81 @@ export async function handlesavecanvas(
     }
   }
 
-  for (let i = 0; i < chunks.length; i++) {
-    const publicId = `${user.data._id}_${posterID}_chunk_${i}`;
-    const blob = new Blob([chunks[i]], { type: "application/gzip" });
+  await Promise.all(
+    chunks.map(async (chunk, i) => {
+      const publicId = `${user.data._id}_${posterID}_chunk_${i}`;
+      const blob = new Blob([chunk], { type: "application/gzip" });
 
-    try {
-      // Step 1: Get signed parameters from the backend
+      try {
+        // Step 1: Get signed parameters from the backend
 
-      const signatureResponse = await axios.post(
-        "http://localhost:8080/generate-signature",
-        {
-          public_id: publicId,
-          upload_preset: isdesigner
-            ? "Artivio_designeredit_preset"
-            : "Artivio_useredits_preset",
-        },
-        { headers: { Authorization: localStorage.getItem("token") } }
-      );
-      console.log(`Got signature for chunk ${i + 1}:`, signatureResponse.data);
-
-      const { signature, timestamp, upload_preset } = signatureResponse.data;
-
-      // Step 2: Upload to Cloudinary with signed parameters
-      const formData = new FormData();
-      formData.append("file", blob);
-      formData.append("public_id", publicId);
-      formData.append("timestamp", timestamp);
-      formData.append("signature", signature);
-      formData.append("api_key", process.env.REACT_APP_CLOUDINARY_API_KEY);
-      formData.append("upload_preset", upload_preset);
-
-      const cloudinaryResponse = await axios.post(
-        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        const signatureResponse = await axios.post(
+          "http://localhost:8080/generate-signature",
+          {
+            public_id: publicId,
+            upload_preset: isdesigner
+              ? "Artivio_designeredit_preset"
+              : "Artivio_useredits_preset",
           },
-        }
-      );
-      console.log(`Coudinary response : `, cloudinaryResponse.data);
+          { headers: { Authorization: localStorage.getItem("token") } }
+        );
+        console.log(
+          `Got signature for chunk ${i + 1}:`,
+          signatureResponse.data
+        );
 
-      const cloudinaryUrl = cloudinaryResponse.data.secure_url;
+        const { signature, timestamp, upload_preset } = signatureResponse.data;
 
-      // Step 3: Save metadata to the backend
-      const data = {
-        posterid: posterID,
-        chunkjson: cloudinaryUrl,
-        chunknumber: i,
-        publicid: publicId,
-      };
+        // Step 2: Upload to Cloudinary with signed parameters
+        const formData = new FormData();
+        formData.append("file", blob);
+        formData.append("public_id", publicId);
+        formData.append("timestamp", timestamp);
+        formData.append("signature", signature);
+        formData.append("api_key", process.env.REACT_APP_CLOUDINARY_API_KEY);
+        formData.append("upload_preset", upload_preset);
 
-      isdesigner
-        ? (data.designerid = user.data._id)
-        : (data.userid = user.data._id);
+        const cloudinaryResponse = await axios.post(
+          `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(`Coudinary response : `, cloudinaryResponse.data);
 
-      const URL = isdesigner
-        ? "http://localhost:8080/posters/savechunkfromdesigner"
-        : "http://localhost:8080/posters/savechunkfromuser";
+        const cloudinaryUrl = cloudinaryResponse.data.secure_url;
 
-      const backendResponse = await axios.post(URL, data, {
-        headers: { Authorization: localStorage.getItem("token") },
-      });
+        // Step 3: Save metadata to the backend
+        const data = {
+          posterid: posterID,
+          chunkjson: cloudinaryUrl,
+          chunknumber: i,
+          publicid: publicId,
+        };
 
-      console.log(`Uploaded chunk ${i + 1}:`, backendResponse.data);
-    } catch (error) {
-      console.error(`Error uploading chunk ${i + 1}:`, error.response.data);
-      alert(`Error saving canvas : ${error.response.data.message}`);
-      return;
-    }
-  }
+        isdesigner
+          ? (data.designerid = user.data._id)
+          : (data.userid = user.data._id);
+
+        const URL = isdesigner
+          ? "http://localhost:8080/posters/savechunkfromdesigner"
+          : "http://localhost:8080/posters/savechunkfromuser";
+
+        const backendResponse = await axios.post(URL, data, {
+          headers: { Authorization: localStorage.getItem("token") },
+        });
+
+        console.log(`Uploaded chunk ${i + 1}:`, backendResponse.data);
+      } catch (error) {
+        console.error(`Error uploading chunk ${i + 1}:`, error.response.data);
+        alert(`Error saving canvas : ${error.response.data.message}`);
+        return;
+      }
+    })
+  );
 
   if (isdesigner) {
     setIsSaving(false);

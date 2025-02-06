@@ -51,25 +51,15 @@ export async function handleloadcanvas(
     // console.log("decompressed data : ", decompressedData);
     const parsedData = JSON.parse(decompressedData);
 
-    // parsedData.objects.forEach((obj, index) => {
-    //   console.log(`Checking object ${index}:`, obj);
-    //   if (obj.type === "Text" || obj.type === "textbox") {
-    //     console.log("check");
-    //     console.log(`Text: ${obj.text}`);
-    //     // obj.text = " ";
-    //   }
-    // });
-
-    parsedData.objects.forEach((obj) => {
-      if (obj.type === "Text" && !obj.text) {
-        obj.text = "ab"; // Default value to prevent errors
-      }
-    });
+    console.log("parsedData : ", parsedData);
 
     canvas
       .loadFromJSON(parsedData, function (o, object) {
         // console.log(o.id);
         if (o) {
+          if (object.type === "circle") {
+            object.radius = o.width / 2;
+          }
           if (o.id) {
             object.id = o.id; // Restore custom 'id'
           }
