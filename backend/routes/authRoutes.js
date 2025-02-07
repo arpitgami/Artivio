@@ -7,6 +7,8 @@ const { googlecontroller } = require("../controllers/googleController");
 router
   .post("/login", authController.login)
   .post("/signup", authController.signUp)
-  .post("/google", googlecontroller);
+  .post("/google", googlecontroller)
+  .post("/designersignup", authController.designersignup)
+  .get("/approve", authController.approveDesigner);
 
 module.exports = router;

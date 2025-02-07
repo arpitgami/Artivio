@@ -26,7 +26,12 @@ exports.googlecontroller = async (req, res) => {
     );
     const check = await User.findOne({ email: email });
     console.log(check, "token : ", token);
-
+    if (check && check.isdesigner && !check.isapproved) {
+      return res.json({
+        message: "Designer not approved yet please wait.",
+        success: false,
+      });
+    }
     if (!check) {
       const user = new User({ email: email, username: name });
       await user.save();

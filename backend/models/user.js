@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
     minLength: [6, "Password must be at least 6 characters long"],
     // required: [true, "Enter the password"],
   },
-  // token: String,
+  approvalToken: String,
+  isapproved: { type: Boolean },
   isdesigner: { type: Boolean, default: false },
 });
 
