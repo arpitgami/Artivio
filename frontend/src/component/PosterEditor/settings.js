@@ -111,6 +111,7 @@ export function Settings({ canvas }) {
 
   return (
     <>
+      <div className="text-sm text-base-100 ">Settings Pannel</div>
       {selectedObject && selectedObject.type === "rect" && (
         <>
           <form

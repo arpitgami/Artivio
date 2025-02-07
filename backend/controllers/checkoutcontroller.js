@@ -5,9 +5,11 @@ const Cart = require("../models/cart");
 
 exports.checkoutcontroller = async (req, res) => {
   try {
-    console.log("check");
-    const posters = await Cart.find();
-    console.log("posters:", posters);
+    // console.log("check");
+    const userid = req.body.userid;
+    // console.log("userid : ", userid);
+    const posters = await Cart.find({ userid: userid });
+    // console.log("posters:", posters);
 
     const lineItems = await Promise.all(
       posters.map(async (poster) => {
@@ -32,7 +34,7 @@ exports.checkoutcontroller = async (req, res) => {
 
         return {
           price_data: {
-            currency: "usd",
+            currency: "inr",
             product_data: {
               name: posterDetails.posterName,
               images: [imageURL],

@@ -144,7 +144,7 @@ export function Layers({ canvas }) {
               obj.id === selectedLayer ? " bg-gray-100" : null
             } cursor-pointer hover:bg-gray-100 flex flex-row justify-between items-center`}
           >
-            {obj.type} ({obj.zIndex})
+            {obj.type}
             <span className="flex flex-row gap-2">
               <FontAwesomeIcon
                 className={` size-4 ${

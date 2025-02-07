@@ -169,6 +169,7 @@ export function PosterEditor() {
         )}
         <div className="flex flex-row items-center justify-center h-[600px] ">
           <div className="flex flex-col items-center justify-center h-screen m-2">
+            <div className="text-sm text-base-100 m-2">Tools Pannel</div>
             <div className="flex flex-row items-center justify-center m-2 gap-2">
               <FontAwesomeIcon
                 className="btn btn-sm text-base-100 size-3"
@@ -213,8 +214,10 @@ export function PosterEditor() {
                 Save
               </div>
             </div>
+
             <Settings canvas={canvas}></Settings>
-            <div className="">
+            <div className="flex flex-col items-center">
+              <div className="text-sm text-base-100 m-2">Layers Pannel</div>
               <Layers canvas={canvas}></Layers>
             </div>
           </div>

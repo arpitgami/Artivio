@@ -8,6 +8,7 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [total, setTotal] = useState(0);
+  const [userid, setUserID] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
@@ -21,6 +22,8 @@ function Cart() {
           }
         );
         // console.log(userres.data);
+        setUserID(userres.data._id);
+        // console.log("userid", userid);
 
         const cartres = await axios.get(
           `${process.env.REACT_APP_API_BASE_URL}/cart/${userres.data._id}`,
@@ -30,7 +33,7 @@ function Cart() {
             },
           }
         );
-        // console.log("cart items : ", cartres.data);
+        console.log("cart items : ", cartres.data);
         setCartItems(cartres.data);
 
         // Fetch posters and calculate total
@@ -58,10 +61,9 @@ function Cart() {
   async function makePayment() {
     try {
       const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
-
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/checkout`,
-        cartItems,
+        { userid: userid },
         {
           headers: { Authorization: localStorage.getItem("token") },
         }
