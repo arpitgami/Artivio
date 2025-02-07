@@ -86,8 +86,6 @@ export async function handlesavecanvas(
       const blob = new Blob([chunk], { type: "application/gzip" });
 
       try {
-        // Step 1: Get signed parameters from the backend
-
         const signatureResponse = await axios.post(
           `${process.env.REACT_APP_API_BASE_URL}/generate-signature`,
           {
@@ -105,7 +103,7 @@ export async function handlesavecanvas(
 
         const { signature, timestamp, upload_preset } = signatureResponse.data;
 
-        // Step 2: Upload to Cloudinary with signed parameters
+        // Upload to Cloudinary with signed parameters
         const formData = new FormData();
         formData.append("file", blob);
         formData.append("public_id", publicId);
@@ -127,7 +125,7 @@ export async function handlesavecanvas(
 
         const cloudinaryUrl = cloudinaryResponse.data.secure_url;
 
-        // Step 3: Save metadata to the backend
+        // Save metadata to the backend
         const data = {
           posterid: posterID,
           chunkjson: cloudinaryUrl,

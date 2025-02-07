@@ -2,6 +2,8 @@ const Poster = require("../models/posters");
 const PosterCanvas = require("../models/postercanvas");
 const UserEditsImage = require("../models/usereditsimage");
 const UserEdits = require("../models/userEdits");
+const Cart = require("../models/cart");
+
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -12,7 +14,7 @@ cloudinary.config({
 
 module.exports.createPoster = async (req, res) => {
   try {
-    console.log("Poster data received:", req.body);
+    // console.log("Poster data received:", req.body);
     if (req.body._id) {
       // Update existing poster
       await Poster.findByIdAndUpdate(req.body._id, req.body);
@@ -90,21 +92,25 @@ exports.deletePosterByID = async (req, res) => {
       designerid,
       posterid,
     });
+
+    // console.log("posterschunksdata: ", posterschunksdata);
+
     if (posterschunksdata.length > 0) {
       await Promise.all(
-        posterschunksdata.map((chunk) =>
+        posterschunksdata.map((chunk) => {
           cloudinary.uploader
-            .destroy(chunk.publicid)
+            .destroy(chunk.publicid, { resource_type: "raw" })
             .catch((err) =>
               console.error("Error deleting chunk from Cloudinary: ", err)
-            )
-        )
+            );
+        })
       );
     }
 
     // Delete user edits images
     const usereditsimagedata = await UserEditsImage.find({ posterid });
     await UserEditsImage.deleteMany({ posterid });
+    console.log("usereditsimagedata: ", usereditsimagedata);
     if (usereditsimagedata.length > 0) {
       await Promise.all(
         usereditsimagedata.map((image) =>
@@ -120,17 +126,20 @@ exports.deletePosterByID = async (req, res) => {
     // Delete user edits canvas
     const usereditsdata = await UserEdits.find({ posterid });
     await UserEdits.deleteMany({ posterid });
+    console.log("usereditsdata canvas: ", usereditsdata);
     if (usereditsdata.length > 0) {
       await Promise.all(
         usereditsdata.map((edit) =>
           cloudinary.uploader
-            .destroy(edit.publicid)
+            .destroy(edit.publicid, { resource_type: "raw" })
             .catch((err) =>
               console.error("Error deleting user edit canvas: ", err)
             )
         )
       );
     }
+    //Delete Poster from carts
+    await Cart.deleteMany({ posterid });
 
     res.json({
       message: "Poster and all associated data deleted successfully",
@@ -138,6 +147,7 @@ exports.deletePosterByID = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in deletePosterByID: ", error);
+
     res.status(500).json({
       message: "Failed to delete poster and associated data",
       success: false,

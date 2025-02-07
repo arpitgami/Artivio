@@ -36,7 +36,7 @@ export function YourDesignsPage() {
   }, [designerId]);
 
   async function handleposterdelete(id) {
-    // console.log("posterid : ", id);
+    console.log("posterid : ", id);
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/posters/delete`,
