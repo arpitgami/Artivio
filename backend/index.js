@@ -9,7 +9,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { auth } = require("./middleware/auth");
 const { signaturecontroller } = require("./controllers/signaturecontroller");
-const { checkoutcontroller } = require("./controllers/checkoutcontroller");
+const {
+  checkoutcontroller,
+  sendOrderConfirmationEmail,
+} = require("./controllers/checkoutcontroller");
 
 //database connection
 main().catch((err) => console.log(err));
@@ -23,10 +26,15 @@ async function main() {
 }
 
 server.use(cors());
+server.post(
+  "/webhook/payment-success",
+  express.raw({ type: "application/json" }),
+  sendOrderConfirmationEmail
+);
 server.use(express.json({ limit: "50mb" })); //body parser
 server.get("/", (req, res) => {
-    res.json("Hello");
-})
+  res.json("Hello");
+});
 
 server.use("/auth", authRoutes);
 server.use("/", posterRoutes);
@@ -37,5 +45,4 @@ server.get("/checktoken", auth, (req, res) =>
 );
 server.post("/generate-signature", auth, signaturecontroller);
 server.post("/checkout", auth, checkoutcontroller);
-
 server.listen(8080);

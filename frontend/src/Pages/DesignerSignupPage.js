@@ -21,21 +21,17 @@ const DesignerSignup = () => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
     try {
-      const res = await axios({
-        method: "post",
-        url: `${process.env.REACT_APP_API_BASE_URL}/auth/signup`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(formData),
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/auth/designersignup`,
+        formData
+      );
+      console.log(res.data);
+
       if (res.data.success) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("loggedInUser", res.data.username);
-        alert("Signup Successful, Redirecting to designers pannel...");
-        setTimeout(() => {
-          navigate(`/home/yourdesign`);
-        }, 2000);
+        alert(
+          "Your request has been submitted successfully. We will get back to you soon."
+        );
+        navigate(`/home`);
       } else {
         alert(res.data.message);
       }

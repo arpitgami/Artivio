@@ -117,7 +117,7 @@ exports.login = async (req, res) => {
 
 exports.designersignup = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     const email = req.body.email;
     const designer = await User.findOne({ email });
     if (designer) {
@@ -142,7 +142,7 @@ exports.designersignup = async (req, res) => {
       });
     await newUser.save();
 
-    const approveLink = `${process.env.API_BASE_URL}/approve?designerId=${newUser._id}&token=${approvalToken}`;
+    const approveLink = `${process.env.API_BASE_URL}/auth/approve?designerId=${newUser._id}&token=${approvalToken}`;
 
     const mailOptions = {
       from: process.env.GMAIL_USERNAME,
@@ -167,7 +167,7 @@ exports.designersignup = async (req, res) => {
 exports.approveDesigner = async (req, res) => {
   try {
     const { designerId, token } = req.query;
-    console.log("designerid and token : ", designerId, token);
+    // console.log("designerid and token : ", designerId, token);
 
     const designer = await User.findById({ _id: designerId });
     if (!designer) {

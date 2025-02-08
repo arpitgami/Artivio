@@ -36,7 +36,37 @@ export function NavigationPannel() {
   return (
     <div className="navbar bg-primary text-base-100  ">
       <div className="navbar-start">
-        {/* <div className="ml-5  text-xl">Artivio</div> */}
+        <div class="dropdown">
+          <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </div>
+          <ul
+            tabindex="0"
+            className="menu menu-sm dropdown-content bg-primary rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          >
+            <li>{!isdesigner && <Link to="/home">Home</Link>}</li>
+            <li>{!isdesigner && <Link to="/posters">Posters</Link>}</li>
+            {isdesigner && (
+              <li>
+                <Link to="/home/yourdesign">My Designs</Link>
+              </li>
+            )}
+            <li>{!isdesigner && <Link to="/contact">Contact</Link>}</li>
+          </ul>
+        </div>
         <img
           src="https://res.cloudinary.com/drhmsjhpq/image/upload/v1738520194/Asset_4_c450zr.png"
           className="h-8 ml-6"
@@ -54,7 +84,7 @@ export function NavigationPannel() {
           <li>{!isdesigner && <Link to="/contact">Contact</Link>}</li>
         </ul>
       </div>
-      <div className="navbar-end hidden lg:flex">
+      <div className="navbar-end  lg:flex">
         <ul className="menu menu-horizontal px-8">
           {isdesigner && (
             <li>
@@ -72,7 +102,7 @@ export function NavigationPannel() {
                 <summary className="">
                   {localStorage.getItem("loggedInUser")}
                 </summary>
-                <ul className="bg-black rounded-t-none p-2 z-10 ">
+                <ul className="bg-primary rounded-t-none p-2 z-10 ">
                   {!isdesigner && (
                     <li>
                       <Link to="/home/myedits">
