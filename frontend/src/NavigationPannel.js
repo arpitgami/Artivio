@@ -91,7 +91,7 @@ export function NavigationPannel() {
               <Link to="/home/yourdesign/upload">Upload</Link>
             </li>
           )}
-          {!isdesigner && (
+          {!isdesigner && isAuthenticated && (
             <li>
               <Link to="/cart">Cart</Link>
             </li>
