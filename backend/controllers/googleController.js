@@ -32,13 +32,23 @@ exports.googlecontroller = async (req, res) => {
         success: false,
       });
     }
+
     if (!check) {
       const user = new User({ email: email, username: name });
       await user.save();
+      res.status(200).json({
+        token: token,
+        username: name,
+        isdesigner: user.isdesigner,
+        message: "Google Signin successfully",
+        success: true,
+      });
     }
+
     res.status(200).json({
       token: token,
       username: name,
+      isdesigner: check.isdesigner,
       message: "Google Signin successfully",
       success: true,
     });

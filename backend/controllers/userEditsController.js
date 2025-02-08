@@ -48,7 +48,9 @@ exports.delete_chunks = async (req, res) => {
   try {
     for (const chunk of chunks) {
       // Delete chunk from Cloudinary
-      await cloudinary.uploader.destroy(chunk.publicid);
+      await cloudinary.uploader.destroy(chunk.publicid, {
+        resource_type: "raw",
+      });
 
       // Delete chunk from MongoDB
       await UserEdits.findOneAndDelete({ publicid: chunk.publicid });

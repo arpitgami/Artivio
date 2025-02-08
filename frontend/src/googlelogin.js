@@ -18,9 +18,15 @@ function Googlelogin() {
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loggedInUser", res.data.username);
-        setTimeout(() => {
-          navigate("/home");
-        }, 2000);
+        if (res.data.isdesigner) {
+          setTimeout(() => {
+            navigate("/home/yourdesign");
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            navigate("/home");
+          }, 2000);
+        }
       } else {
         alert(res.data.message);
       }
