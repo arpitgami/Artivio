@@ -21,6 +21,8 @@ Whether you're an art lover looking for exclusive designs or a designer looking 
 
 - Users can edit posters, and the edited canvas state is stored in the backend.
 - Each user's edits are saved separately, allowing them to retrieve previous work.
+- Users can interact with layers, move them around, add shapes and text, manipulate the object's width, height, and color, and upload their images on the canvas.
+- Layer management: Each layer can be moved up and down on the Z-axis and can be deleted as well as hidden.
 - Canvas data is compressed, divided into chunks, and stored in Cloudinary to efficiently handle large JSON data.
 - For secure image and JSON file uploads, Cloudinary signed uploads are used.
 - Users and designers can sign up and log in on the platform.
@@ -38,5 +40,5 @@ Whether you're an art lover looking for exclusive designs or a designer looking 
 ![Poster Editor Page](https://res.cloudinary.com/drhmsjhpq/image/upload/v1739040018/Screenshot_2025-02-08_235314_k4z3d0.png)
 ![Cart Page](https://res.cloudinary.com/drhmsjhpq/image/upload/v1739040016/Screenshot_2025-02-08_235951_o5qs7p.png)
 ![Payment Page](https://res.cloudinary.com/drhmsjhpq/image/upload/v1739040015/Screenshot_2025-02-09_000016_uwucus.png)
-![Order Confirmation Email](https://res.cloudinary.com/drhmsjhpq/image/upload/v1739040015/Screenshot_2025-02-09_000016_uwucus.png)
+![Order Confirmation Email](https://res.cloudinary.com/drhmsjhpq/image/upload/v1739040015/Screenshot_2025-02-09_000442_wuia4x.png)
 ![Designers Dashboard](https://res.cloudinary.com/drhmsjhpq/image/upload/v1739040018/Screenshot_2025-02-09_000318_fo95zh.png)
